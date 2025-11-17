@@ -243,7 +243,7 @@
                                         <tr>
                                             <th class="px-4 py-3 text-sm font-semibold text-gray-600">Local / Identificação</th>
                                             <th class="px-4 py-3 text-sm font-semibold text-gray-600">KPI Atendimento</th>
-                                            <th class="px-4 py-3 text-sm font-semibold text-gray-600 text-center">Ação</th>
+                                            <th class="px-4 py-3 text-sm font-semibold text-gray-600 text-center">Ações</th>
                                         </tr>
                                     </thead>
                                     <tbody id="tabela-registros-body"></tbody>
@@ -292,7 +292,8 @@
         // Importar funções dos SDKs
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+        // IMPORTAR O deleteDoc
+        import { getFirestore, collection, addDoc, onSnapshot, doc, getDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
         // Configuração do Firebase que você forneceu
         const firebaseConfig = {
@@ -632,29 +633,21 @@
             };
 
             // ---- LÓGICA DO FIREBASE ----
-
-            // Substitui o `localStorage` por um objeto em memória
             let database = {}; 
-            
             let currentState = { view: 'dashboard', type: null };
-            let authReady = false; // Flag para saber se a autenticação foi concluída
+            let authReady = false; 
 
-            // Função para configurar os listeners em tempo real
             const setupRealtimeListeners = () => {
                 Object.keys(checklistTemplates).forEach(type => {
-                    // Inicializa o tipo no objeto de banco de dados
                     database[type] = [];
                     const collectionRef = collection(db, type);
                     
                     onSnapshot(collectionRef, (snapshot) => {
                         console.log(`Firebase: Dados recebidos para '${type}'`);
-                        // Mapeia os documentos do Firestore para o nosso objeto `database`
                         database[type] = snapshot.docs.map(doc => ({
-                            id: doc.id, // Adiciona o ID único do Firestore
+                            id: doc.id, 
                             ...doc.data()
                         }));
-                        
-                        // Re-renderiza a UI com os dados atualizados
                         render();
                     }, (error) => {
                         console.error(`Firebase: Erro ao ouvir a coleção '${type}': `, error);
@@ -662,12 +655,10 @@
                 });
             };
 
-            // Autenticação anônima
             signInAnonymously(auth)
                 .then(() => {
                     console.log("Firebase: Usuário anônimo conectado.");
                     authReady = true;
-                    // Agora que estamos autenticados, começamos a ouvir o banco de dados
                     setupRealtimeListeners();
                 })
                 .catch((error) => {
@@ -675,9 +666,6 @@
                 });
             
             // --- FUNÇÕES DE LÓGICA ---
-            
-            // Não precisamos mais de saveToLocalStorage()
-
             const calculateKPI = (ensaios) => {
                 const realizados = ensaios.filter(e => e.status === 'conforme' || e.status === 'nao_conforme');
                 if (realizados.length === 0) return 0;
@@ -687,7 +675,6 @@
             
             // --- FUNÇÕES DE RENDERIZAÇÃO ---
             const render = () => {
-                // Não renderiza nada se a autenticação e os listeners não estiverem prontos
                 if (!authReady) return; 
 
                 views.forEach(v => v.classList.add('hidden'));
@@ -742,7 +729,7 @@
                 }
                 
                 Object.keys(checklistTemplates).forEach(type => {
-                    const registros = database[type] || []; // Pega os dados do objeto em memória
+                    const registros = database[type] || []; 
                     const totalKPI = registros.reduce((acc, reg) => acc + reg.kpi, 0);
                     const mediaKPI = registros.length > 0 ? Math.round(totalKPI / registros.length) : 0;
                     const kpiColor = mediaKPI >= 95 ? 'text-[#9FC419]' : (mediaKPI >= 70 ? 'text-yellow-500' : 'text-red-500');
@@ -786,7 +773,7 @@
             const renderListaRegistros = (type) => {
                 renderInfoSection(type);
                 listaRegistrosTitulo.textContent = `Registros de ${checklistTemplates[type].title}`;
-                const registros = database[type] || []; // Pega os dados do objeto em memória
+                const registros = database[type] || []; 
                 tabelaRegistrosBody.innerHTML = '';
                 
                 emptyStateLista.classList.toggle('hidden', registros.length > 0);
@@ -798,9 +785,12 @@
                     tr.innerHTML = `
                         <td class="px-4 py-4 font-medium text-gray-800">${registro.local}</td>
                         <td class="px-4 py-4 font-bold ${kpiColor}">${registro.kpi}%</td>
-                        <td class="px-4 py-4 text-center">
+                        <td class="px-4 py-4 text-center space-x-2">
                             <button class="bg-gray-200 text-[#01455C] hover:bg-gray-300 font-medium py-1 px-3 rounded-md view-details-btn" data-id="${registro.id}">
                                 Visualizar
+                            </button>
+                            <button class="bg-red-100 text-red-700 hover:bg-red-200 font-medium py-1 px-3 rounded-md delete-btn" data-id="${registro.id}" data-type="${type}">
+                                Excluir
                             </button>
                         </td>
                     `;
@@ -814,7 +804,6 @@
                 let isReadOnly = false;
 
                 if (recordId) {
-                    // Busca o registro no objeto em memória usando o ID do Firestore
                     registro = (database[type] || []).find(r => r.id === recordId);
                     isReadOnly = true;
                 }
@@ -890,7 +879,6 @@
                 render();
             });
 
-            // ATUALIZADO: Salvar no Firebase
             salvarRegistroBtn.addEventListener('click', async () => {
                 const local = localInput.value.trim();
                 if (!local) {
@@ -914,38 +902,50 @@
                     local: local,
                     kpi: calculateKPI(ensaiosDoRegistro),
                     ensaios: ensaiosDoRegistro
-                    // ID será gerado pelo Firestore
                 };
                 
                 try {
-                    // Salva na coleção correta no Firestore
                     const collectionRef = collection(db, tipoAtual);
                     await addDoc(collectionRef, novoRegistro);
-                    
-                    // Sucesso! Volta para a lista
-                    // O onSnapshot vai atualizar a lista automaticamente
                     currentState.view = tipoAtual;
                     render();
-
                 } catch (e) {
                     console.error("Firebase: Erro ao adicionar documento: ", e);
                     alert("Erro ao salvar o registro. Verifique o console.");
                 }
             });
             
-            // ATUALIZADO: Ler o ID do Firestore
-            tabelaRegistrosBody.addEventListener('click', e => {
+            // ATUALIZADO: Adiciona listener para botões de Excluir
+            tabelaRegistrosBody.addEventListener('click', async (e) => {
                 const viewBtn = e.target.closest('.view-details-btn');
+                const deleteBtn = e.target.closest('.delete-btn');
+
                 if (viewBtn) {
                     currentState.view = 'form';
-                    currentState.recordId = viewBtn.dataset.id; // Agora é o ID do Firestore
+                    currentState.recordId = viewBtn.dataset.id; // ID do Firestore
                     render();
+                }
+
+                if (deleteBtn) {
+                    const id = deleteBtn.dataset.id;
+                    const type = deleteBtn.dataset.type;
+                    
+                    if (confirm("Tem certeza que deseja excluir este registro? Esta ação não pode ser desfeita.")) {
+                        try {
+                            const docRef = doc(db, type, id);
+                            await deleteDoc(docRef);
+                            // O onSnapshot cuidará de atualizar a UI, não precisamos chamar o render()
+                            console.log("Registro excluído com sucesso!");
+                        } catch (error) {
+                            console.error("Firebase: Erro ao excluir documento: ", error);
+                            alert("Erro ao excluir o registro. Verifique o console.");
+                        }
+                    }
                 }
             });
 
             // --- INICIALIZAÇÃO ---
-            // Não chama o render() aqui.
-            // O render() será chamado pelo onSnapshot após a autenticação.
+            // A renderização é iniciada pelo onSnapshot após a autenticação
         });
     </script>
 </body>
