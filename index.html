@@ -168,7 +168,17 @@
                 </li>
 
                 <!-- 07. Pintura -->
-                <li><div class="nav-main-menu nav-placeholder" title="Em breve"><span>07. Pintura</span></div></li>
+                <li>
+                    <div class="nav-main-menu">
+                        <span>07. Pintura</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </div>
+                    <ul class="nav-sub-menu">
+                        <li><button class="nav-link" data-view="pinturaLatexFosca">07.01. Tinta Látex Fosca</button></li>
+                        <li><button class="nav-link" data-view="pinturaLatexAcetinada">07.02. Tinta Látex Acetinada</button></li>
+                        <li><button class="nav-link" data-view="pinturaTexturaExterna">07.03. Textura Externa</button></li>
+                    </ul>
+                </li>
                 
                 <!-- 08. Sistemas Prediais -->
                 <li>
@@ -292,7 +302,6 @@
         // Importar funções dos SDKs
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
-        // IMPORTAR O deleteDoc
         import { getFirestore, collection, addDoc, onSnapshot, doc, getDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
         // Configuração do Firebase que você forneceu
@@ -455,23 +464,22 @@
                 revestimento: {
                     title: '04.02. Revest. de Argamassa',
                     ensaios: [
-                        { id: 1, caracteristica: 'Resistência à compressão', norma: 'NBR 13279' },
-                        { id: 2, caracteristica: 'Retenção de água', norma: 'NBR 13278' },
-                        { id: 3, caracteristica: 'Teor de ar incorporado', norma: 'NBR 13277' },
-                        { id: 4, caracteristica: 'Densidade de massa', norma: 'NBR 13277' },
-                        { id: 5, caracteristica: 'Tempo em aberto', norma: 'NBR 14081-3' }
+                        { id: 1, caracteristica: 'Resistência de aderência à tração', norma: 'NBR 13528-2 / NBR 15258' },
+                        { id: 2, caracteristica: 'Resistência potencial à tração superficial', norma: 'NBR 15258' },
+                        { id: 3, caracteristica: 'Módulo de elasticidade dinâmico', norma: 'NBR 15630' },
+                        { id: 4, caracteristica: 'Variação dimensional (retração ou expansão linear)', norma: 'NBR 15261' },
+                        { id: 5, caracteristica: 'Retenção de água', norma: 'NBR 13277' },
+                        { id: 6, caracteristica: 'Densidade de massa no estado fresco', norma: 'NBR 13278' },
+                        { id: 7, caracteristica: 'Teor de ar incorporado', norma: 'NBR 13278' }
                     ],
                     info: {
                         atencao: [
-                            { caracteristica: 'Amostragem', ponto: 'Os ensaios de argamassa (industrializada ou dosada em obra) devem ser realizados em laboratório para aprovação, antes do início da aplicação.'},
-                            { caracteristica: 'Frequência', ponto: 'A cada 2.000 m² de revestimento aplicado, de um mesmo pavimento ou de uma mesma argamassa, deve ser coletada uma amostra.' },
-                            { caracteristica: 'Corpos de Prova', ponto: 'Deve ser moldado 1 corpo de prova (para ensaio de resistência à compressão) para cada 200 m² de revestimento ou para cada pavimento.' }
+                            { caracteristica: 'Resistência de aderência à tração', ponto: 'A aderência dos revestimentos acabados pode ser feita por ensaios de percussão, realizados através de impactos leves, não contundentes, com martelo de madeira ou outro instrumento rijo. A avaliação deve ser feita em cerca de 1 m2, a cada 100 m2 para paredes. A execução de ensaios de resistência de aderência à tração é feita em pontos escolhidos aleatoriamente, a cada 100 m2 ou menos da área em avaliação.'},
+                            { caracteristica: 'Demais Ensaios', ponto: 'A NBR 16541 - Argamassa para assentamento e revestimento de paredes e tetos - Preparo da mistura para a realização de ensaios indica a utilização de 2,5 kg de argamassa no estado fresco para a realização dos ensaios.' }
                         ],
                         dicas: [
-                            { caracteristica: 'Rastreabilidade', dica: 'A rastreabilidade dos materiais deve ser garantida com o arquivamento das notas fiscais e certificados de qualidade.'},
-                            { caracteristica: 'Armazenamento', dica: 'O armazenamento dos sacos de argamassa deve ser em local seco, ventilado, sobre paletes e afastado no mínimo 30 cm das paredes.'},
-                            { caracteristica: 'Execução', dica: 'A argamassa deve ser misturada mecanicamente com a quantidade de água indicada pelo fabricante, até a obtenção de uma mistura homogênea.'},
-                            { caracteristica: 'Resultados', dica: 'Caso os resultados não sejam satisfatórios, deve-se comunicar o projetista de revestimentos e a empresa, para discutir as ações de remediação.'}
+                            { caracteristica: 'Resistência de aderência à tração', dica: 'Os revestimentos que apresentarem som cavo nesta inspeção, por amostragem, devem ser integralmente percutidos para se estimar a área total com falha de aderência, a ser reparada.'},
+                            { caracteristica: 'Demais Ensaios', dica: 'Estes são ensaios para determinação de propriedades físicas para classificação da argamassa.'}
                         ]
                     }
                 },
@@ -557,6 +565,58 @@
                         ]
                     }
                 },
+                // NOVOS MÓDULOS DE PINTURA
+                pinturaLatexFosca: {
+                    title: '07.01. Tinta Látex Fosca',
+                    ensaios: [
+                        { id: 1, caracteristica: 'Poder de cobertura de tinta seca / Rendimento', norma: 'NBR 14942' },
+                        { id: 2, caracteristica: 'Poder de cobertura de tinta úmida', norma: 'NBR 14943' },
+                        { id: 3, caracteristica: 'Resistência à abrasão úmida sem pasta', norma: 'NBR 15078' },
+                        { id: 4, caracteristica: 'Resistência à abrasão úmida com pasta', norma: 'NBR 14940' }
+                    ],
+                    info: {
+                        atencao: [
+                            { caracteristica: 'Geral', ponto: 'Tamanho da amostra e número de aceitação e rejeição devem ser conforme NBR 5426, no tamanho do lote de inspeção acordado com o fornecedor, usando amostragem dupla normal, NQA de 2,5% e nível de inspeção NI.' }
+                        ],
+                        dicas: [
+                            { caracteristica: 'Geral', dica: 'Se a amostra do lote for reprovada, todo o lote deve ser devolvido ao fornecedor.'}
+                        ]
+                    }
+                },
+                pinturaLatexAcetinada: {
+                    title: '07.02. Tinta Látex Acetinada',
+                    ensaios: [
+                        { id: 1, caracteristica: 'Poder de cobertura de tinta seca / Rendimento', norma: 'NBR 14942' },
+                        { id: 2, caracteristica: 'Poder de cobertura de tinta úmida', norma: 'NBR 14943' },
+                        { id: 3, caracteristica: 'Resistência à abrasão úmida com pasta', norma: 'NBR 14940' },
+                        { id: 4, caracteristica: 'Determinação de brilho', norma: 'NBR 15299' }
+                    ],
+                    info: {
+                        atencao: [
+                            { caracteristica: 'Geral', ponto: 'Tamanho da amostra e número de aceitação e rejeição devem ser conforme NBR 5426, no tamanho do lote de inspeção acordado com o fornecedor, usando amostragem dupla normal, NQA de 2,5% e nível de inspeção NI.' }
+                        ],
+                        dicas: [
+                            { caracteristica: 'Geral', dica: 'Se a amostra do lote for reprovada, todo o lote deve ser devolvido ao fornecedor.'}
+                        ]
+                    }
+                },
+                pinturaTexturaExterna: {
+                    title: '07.03. Textura Externa',
+                    ensaios: [
+                        { id: 1, caracteristica: 'Resistência de aderência à tração', norma: 'NBR 16912' },
+                        { id: 2, caracteristica: 'Resistência de aderência à tração pós envelhecimento', norma: 'NBR 16912' },
+                        { id: 3, caracteristica: 'Permeabilidade à água por coluna d\'água', norma: 'NBR 17012' }
+                    ],
+                    info: {
+                        atencao: [
+                            { caracteristica: 'Geral', ponto: 'Tamanho da amostra e número de aceitação e rejeição devem ser conforme NBR 5426, no tamanho do lote de inspeção acordado com o fornecedor, usando amostragem dupla normal, NQA de 2,5% e nível de inspeção NI.' }
+                        ],
+                        dicas: [
+                            { caracteristica: 'Geral', dica: 'Se a amostra do lote for reprovada, todo o lote deve ser devolvido ao fornecedor.'}
+                        ]
+                    }
+                },
+                // FIM DOS MÓDULOS DE PINTURA
                 agua: {
                     title: '08.01. Água Fria e Quente',
                     ensaios: [
@@ -711,6 +771,10 @@
                     case 'esgoto':
                     case 'gas':
                     case 'eletrica':
+                    // NOVOS CASOS DE PINTURA
+                    case 'pinturaLatexFosca':
+                    case 'pinturaLatexAcetinada':
+                    case 'pinturaTexturaExterna':
                         listaRegistrosView.classList.remove('hidden');
                         renderListaRegistros(currentState.view);
                         break;
@@ -729,19 +793,22 @@
                 }
                 
                 Object.keys(checklistTemplates).forEach(type => {
-                    const registros = database[type] || []; 
-                    const totalKPI = registros.reduce((acc, reg) => acc + reg.kpi, 0);
-                    const mediaKPI = registros.length > 0 ? Math.round(totalKPI / registros.length) : 0;
-                    const kpiColor = mediaKPI >= 95 ? 'text-[#9FC419]' : (mediaKPI >= 70 ? 'text-yellow-500' : 'text-red-500');
+                    // Garante que só vamos tentar renderizar o que existe no `database` (que é baseado no Firestore)
+                    if (database[type]) {
+                        const registros = database[type]; 
+                        const totalKPI = registros.reduce((acc, reg) => acc + reg.kpi, 0);
+                        const mediaKPI = registros.length > 0 ? Math.round(totalKPI / registros.length) : 0;
+                        const kpiColor = mediaKPI >= 95 ? 'text-[#9FC419]' : (mediaKPI >= 70 ? 'text-yellow-500' : 'text-red-500');
 
-                    const tr = document.createElement('tr');
-                    tr.className = 'border-b hover:bg-gray-50';
-                    tr.innerHTML = `
-                        <td class="px-6 py-4 font-medium text-gray-800">${checklistTemplates[type].title}</td>
-                        <td class="px-6 py-4 text-gray-600 text-center">${registros.length}</td>
-                        <td class="px-6 py-4 font-bold text-center text-xl ${kpiColor}">${mediaKPI}%</td>
-                    `;
-                    dashboardTableBody.appendChild(tr);
+                        const tr = document.createElement('tr');
+                        tr.className = 'border-b hover:bg-gray-50';
+                        tr.innerHTML = `
+                            <td class="px-6 py-4 font-medium text-gray-800">${checklistTemplates[type].title}</td>
+                            <td class="px-6 py-4 text-gray-600 text-center">${registros.length}</td>
+                            <td class="px-6 py-4 font-bold text-center text-xl ${kpiColor}">${mediaKPI}%</td>
+                        `;
+                        dashboardTableBody.appendChild(tr);
+                    }
                 });
             };
 
@@ -754,14 +821,35 @@
                 if (infoData) {
                     infoSectionContainer.style.display = 'block';
                     let atencaoHtml = `<div class="bg-white rounded-lg p-4 border"><h3 class="text-lg font-bold text-yellow-600 mb-3">PONTOS DE ATENÇÃO DA QUALIDADE</h3><table class="w-full text-left table-auto"><tbody>`;
-                    infoData.atencao.forEach(item => {
-                        atencaoHtml += `<tr class="border-b"><td class="py-2 pr-4 font-semibold text-gray-700 align-top w-1/3">${item.caracteristica}</td><td class="py-2 text-gray-600">${item.ponto}</td></tr>`;
+                    
+                    const groupedAtencao = infoData.atencao.reduce((acc, item) => {
+                        const key = item.caracteristica;
+                        if (!acc[key]) {
+                            acc[key] = { caracteristica: key, pontos: [] };
+                        }
+                        acc[key].pontos.push(item.ponto);
+                        return acc;
+                    }, {});
+
+                    Object.values(groupedAtencao).forEach(group => {
+                        atencaoHtml += `<tr class="border-b"><td class="py-2 pr-4 font-semibold text-gray-700 align-top w-1/3">${group.caracteristica}</td><td class="py-2 text-gray-600">${group.pontos.join('<br>')}</td></tr>`;
                     });
                     atencaoHtml += `</tbody></table></div>`;
 
+
                     let dicasHtml = `<div class="bg-white rounded-lg p-4 border mt-4"><h3 class="text-lg font-bold text-green-600 mb-3">DICAS DE QUALIDADE</h3><table class="w-full text-left table-auto"><tbody>`;
-                    infoData.dicas.forEach(item => {
-                        dicasHtml += `<tr class="border-b"><td class="py-2 pr-4 font-semibold text-gray-700 align-top w-1/3">${item.caracteristica}</td><td class="py-2 text-gray-600">${item.dica}</td></tr>`;
+                    
+                     const groupedDicas = infoData.dicas.reduce((acc, item) => {
+                        const key = item.caracteristica;
+                        if (!acc[key]) {
+                            acc[key] = { caracteristica: key, dicas: [] };
+                        }
+                        acc[key].dicas.push(item.dica);
+                        return acc;
+                    }, {});
+
+                    Object.values(groupedDicas).forEach(group => {
+                        dicasHtml += `<tr class="border-b"><td class="py-2 pr-4 font-semibold text-gray-700 align-top w-1/3">${group.caracteristica}</td><td class="py-2 text-gray-600">${group.dicas.join('<br>')}</td></tr>`;
                     });
                     dicasHtml += `</tbody></table></div>`;
                     infoSectionContent.innerHTML = atencaoHtml + dicasHtml;
@@ -915,7 +1003,6 @@
                 }
             });
             
-            // ATUALIZADO: Adiciona listener para botões de Excluir
             tabelaRegistrosBody.addEventListener('click', async (e) => {
                 const viewBtn = e.target.closest('.view-details-btn');
                 const deleteBtn = e.target.closest('.delete-btn');
