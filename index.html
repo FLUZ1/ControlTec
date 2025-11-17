@@ -137,7 +137,7 @@
                     <ul class="nav-sub-menu">
                         <li><button class="nav-link" data-view="alvenariaVedacao">04.01. Alvenaria de Vedação</button></li>
                         <li><button class="nav-link" data-view="revestimento">04.02. Revest. de Argamassa</button></li>
-                        <li><button class="nav-link nav-placeholder" disabled>04.03. Revest. Cerâmico</button></li>
+                        <li><button class="nav-link" data-view="revestimentoCeramico">04.03. Revest. Cerâmico</button></li>
                     </ul>
                 </li>
 
@@ -161,7 +161,8 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                     </div>
                     <ul class="nav-sub-menu">
-                        <li><button class="nav-link nav-placeholder" disabled>06.01. Porta de madeira</button></li>
+                        <!-- ATUALIZADO: 06.01 ativado -->
+                        <li><button class="nav-link" data-view="portaMadeira">06.01. Porta de madeira</button></li>
                         <li><button class="nav-link" data-view="janelas">06.02. Janelas</button></li>
                         <li><button class="nav-link" data-view="guardaCorpo">06.03. Guarda-Corpo</button></li>
                     </ul>
@@ -374,19 +375,33 @@
                         ]
                     }
                 },
+                // ATUALIZADO: 02.01 ESTACAS
                 estacas: {
                     title: '02.01. Estacas',
                     ensaios: [
-                        { id: 1, caracteristica: 'Prova de carga estática', norma: 'NBR 16203' }
+                        // Concreto
+                        { id: 1, caracteristica: 'Abatimento ("slump")', norma: 'NBR 16889' },
+                        { id: 2, caracteristica: 'Resistência à compressão', norma: 'NBR 5739' },
+                        // Aço
+                        { id: 3, caracteristica: 'Propriedades mecânicas de tração', norma: 'NBR 6892-1' },
+                        { id: 4, caracteristica: 'Propriedades mecânicas de dobramento', norma: 'NBR 17005' },
+                        { id: 5, caracteristica: 'Coeficiente de conformação superficial', norma: 'NBR 7477' },
+                        { id: 6, caracteristica: 'Fadiga', norma: 'NBR 7478' },
+                        // Estacas
+                        { id: 7, caracteristica: 'Prova de carga estática', norma: 'NBR 16903' }
                     ],
                     info: {
                         atencao: [
-                            { caracteristica: 'Prova de carga estática', ponto: 'O número de provas de carga deve ser de 1% do número total de estacas da obra (arredondando para uma casa decimal, em seguida arredondar o número obtido para o número inteiro mais próximo, com dígito 5 sempre arredondado para cima).' },
-                            { caracteristica: 'Prova de carga estática', ponto: 'Pelo menos uma prova de carga estática ou ensaio de carregamento dinâmico devem ser feitos nas estacas da edificação principal da obra.' }
+                            { caracteristica: 'Abatimento ("slump")', ponto: 'Deve ser feito no recebimento do material em obra, a cada betonada recebida de empresa de concretagem.' },
+                            { caracteristica: 'Resistência à compressão', ponto: 'A amostragem e o controle estatístico deve ser realizado conforme a NBR 12655. Corpos de prova devem ser moldados conforme NBR 5738.' },
+                            { caracteristica: 'Aço (Tração, Dobramento, etc.)', ponto: 'As barras ou fios de cada fornecimento devem ser repartidos em lotes aproximadamente iguais e perfeitamente identificáveis, cujas massas máximas não excedam 30 t. Deve ser retirada uma amostra de cada lote, extraída aleatoriamente composta por 3 exemplares de comprimento de no mínimo 1,5 m.' },
+                            { caracteristica: 'Prova de carga estática', ponto: 'O número de provas de carga deve ser de 1% do número total de estacas da obra (arredondando para uma casa decimal, e em seguida arredondar o número obtido para o número inteiro mais próximo, com dígito 5 sempre arredondado para cima). Pelo menos uma prova de carga estática ou ensaios de carregamento dinâmico devem ser feitos nas estacas da edificação principal da obra.' }
                         ],
                         dicas: [
-                            { caracteristica: 'Prova de carga estática', dica: 'Se esse valor da carga de ruptura não for obtido, a interpretação dos resultados deve ser feita pelo projetista.'},
-                            { caracteristica: 'Prova de carga estática', dica: 'Se os resultados da prova de carga estática não forem satisfatórios, deve-se informar ao projetista e solicitar que ele estude a situação para indicar as ações necessárias.' }
+                            { caracteristica: 'Abatimento ("slump")', dica: 'Se o resultado não for adequado, conforme da NBR 7212, não se admite adição de água. Caso o concreto apresente abatimento inferior à classe especificada, admite-se adição suplementar de aditivo para corrigir.' },
+                            { caracteristica: 'Resistência à compressão', dica: 'Como o valor de resistência é obtido 28 dias após o uso, deve ser feito um mapa de concretagem para rastrear onde cada lote foi aplicado. No caso de reprovação, o projetista deve ser comunicado.' },
+                            { caracteristica: 'Aço (Tração, Dobramento, etc.)', dica: 'Barras e fios de aço possuem certificação compulsória (Portaria INMETRO n° 73 de 17/03/2010), os materiais podem ser comercializados somente em conformidade com o INMETRO. O ensaio de fadiga é obrigatório somente quando solicitado pelo comprador.' },
+                            { caracteristica: 'Prova de carga estática', dica: 'Se esse valor da carga de ruptura não for obtido, a interpretação dos resultados deve ser feita pelo projetista. E se os resultados da prova de carga estática não forem satisfatórios, deve-se informar ao projetista e solicitar que ele estude a situação para indicar as ações necessárias.' }
                         ]
                     }
                 },
@@ -475,11 +490,25 @@
                     info: {
                         atencao: [
                             { caracteristica: 'Resistência de aderência à tração', ponto: 'A aderência dos revestimentos acabados pode ser feita por ensaios de percussão, realizados através de impactos leves, não contundentes, com martelo de madeira ou outro instrumento rijo. A avaliação deve ser feita em cerca de 1 m2, a cada 100 m2 para paredes. A execução de ensaios de resistência de aderência à tração é feita em pontos escolhidos aleatoriamente, a cada 100 m2 ou menos da área em avaliação.'},
-                            { caracteristica: 'Demais Ensaios', ponto: 'A NBR 16541 - Argamassa para assentamento e revestimento de paredes e tetos - Preparo da mistura para a realização de ensaios indica a utilização de 2,5 kg de argamassa no estado fresco para a realização dos ensaios.' }
+                            { caracteristica: 'Ensaios (Potencial à tração, Módulo, Variação, etc.)', ponto: 'A NBR 16541 - Argamassa para assentamento e revestimento de paredes e tetos - Preparo da mistura para a realização de ensaios indica a utilização de 2,5 kg de argamassa no estado fresco para a realização dos ensaios.' }
                         ],
                         dicas: [
                             { caracteristica: 'Resistência de aderência à tração', dica: 'Os revestimentos que apresentarem som cavo nesta inspeção, por amostragem, devem ser integralmente percutidos para se estimar a área total com falha de aderência, a ser reparada.'},
-                            { caracteristica: 'Demais Ensaios', dica: 'Estes são ensaios para determinação de propriedades físicas para classificação da argamassa.'}
+                            { caracteristica: 'Ensaios (Potencial à tração, Módulo, Variação, etc.)', dica: 'Estes são ensaios para determinação de propriedades físicas para classificação da argamassa.'}
+                        ]
+                    }
+                },
+                revestimentoCeramico: {
+                    title: '04.03. Revest. Cerâmico de Parede',
+                    ensaios: [
+                        { id: 1, caracteristica: 'Resistência de aderência à tração', norma: 'NBR 13754 - Anexo A' }
+                    ],
+                    info: {
+                        atencao: [
+                            { caracteristica: 'Resistência de aderência à tração', ponto: 'Devem ser consideradas seis determinações da resistência de aderência, após a cura de 28 dias da argamassa colante utilizada.' }
+                        ],
+                        dicas: [
+                            { caracteristica: 'Resistência de aderência à tração', dica: 'O revestimento executado com resistência de aderência que não atende a NBR 13754 deve ser reexecutado ou reparado.'}
                         ]
                     }
                 },
@@ -528,6 +557,37 @@
                         ]
                     }
                 },
+                // ATUALIZADO: 06.01 PORTA DE MADEIRA
+                portaMadeira: {
+                    title: '06.01. Porta de madeira',
+                    ensaios: [
+                        { id: 1, caracteristica: 'Aspecto visual', norma: 'NBR 15930-2 Anexo B' },
+                        { id: 2, caracteristica: 'Variação dimensional (dimensões nominais)', norma: 'NBR 15930-2 Anexo D' },
+                        { id: 3, caracteristica: 'Variação dimensional (variações higroscópicas)', norma: 'NBR 15930-2 Anexo D' },
+                        { id: 4, caracteristica: 'Carregamento vertical (giro/pivotante)', norma: 'NBR 15930-2 Anexo F' },
+                        { id: 5, caracteristica: 'Torção estática (giro/pivotante)', norma: 'NBR 15930-2 Anexo F' },
+                        { id: 6, caracteristica: 'Impactos de corpo mole', norma: 'NBR 15930-2 Anexo G' },
+                        { id: 7, caracteristica: 'Impactos de corpo duro', norma: 'NBR 15930-2 Anexo G' },
+                        { id: 8, caracteristica: 'Resist. ao fechamento com obstrução', norma: 'NBR 15930-2 Anexo G' },
+                        { id: 9, caracteristica: 'Resist. ao fechamento brusco', norma: 'NBR 15930-2 Anexo G' },
+                        { id: 10, caracteristica: 'Resist. à flexão (porta de correr)', norma: 'NBR 10821-3' },
+                        { id: 11, caracteristica: 'Resist. ao esforço horizontal (porta de correr)', norma: 'NBR 10821-3' },
+                        { id: 12, caracteristica: 'Ciclos de abertura e fechamento', norma: 'NBR 15930-2 Anexo H' },
+                        { id: 13, caracteristica: 'Esforços de manuseio', norma: 'NBR 15930-2 Anexo H' },
+                        { id: 14, caracteristica: 'Resist. à ação do calor e umidade (portas RU)', norma: 'NBR 15930-2 Anexo I' },
+                        { id: 15, caracteristica: 'Resist. à ação da água (portas RU)', norma: 'NBR 15930-2 Anexo I' }
+                    ],
+                    info: {
+                        atencao: [
+                            { caracteristica: 'Aspecto visual', ponto: 'Deve-se inspecionar 100% do lote.' },
+                            { caracteristica: 'Ensaios de Desempenho (Dimensionais, Cargas, etc.)', ponto: 'A amostragem deve seguir a Tabela 32: 1 exemplar para lotes de até 500 unidades, e 3 exemplares para lotes de 501 até 35.000 unidades. A quantidade de corpos-de-prova para cada ensaio deve obedecer as Tabelas 33 e 34.' }
+                        ],
+                        dicas: [
+                            { caracteristica: 'Aspecto visual', dica: 'Os produtos não conformes devem ser rejeitados e substituídos pelo fornecedor.' },
+                            { caracteristica: 'Ensaios de Desempenho', dica: 'O controle de portas é bem rigoroso: todos os corpos-de-prova devem atender aos requisitos, caso contrário, o lote deve ser reprovado e o fornecedor deve providenciar nova entrega.' }
+                        ]
+                    }
+                },
                 janelas: {
                     title: '06.02. Janelas',
                     ensaios: [
@@ -565,7 +625,6 @@
                         ]
                     }
                 },
-                // NOVOS MÓDULOS DE PINTURA
                 pinturaLatexFosca: {
                     title: '07.01. Tinta Látex Fosca',
                     ensaios: [
@@ -616,7 +675,6 @@
                         ]
                     }
                 },
-                // FIM DOS MÓDULOS DE PINTURA
                 agua: {
                     title: '08.01. Água Fria e Quente',
                     ensaios: [
@@ -762,16 +820,18 @@
                     case 'alvenaria':
                     case 'revestimento':
                     case 'alvenariaVedacao':
+                    case 'revestimentoCeramico':
                     case 'pisoCeramico':
                     case 'impermeabilizacao':
                     case 'forroGesso':
+                    // ATUALIZADO: 06.01 ativado
+                    case 'portaMadeira':
                     case 'janelas':
                     case 'guardaCorpo':
                     case 'agua':
                     case 'esgoto':
                     case 'gas':
                     case 'eletrica':
-                    // NOVOS CASOS DE PINTURA
                     case 'pinturaLatexFosca':
                     case 'pinturaLatexAcetinada':
                     case 'pinturaTexturaExterna':
@@ -812,6 +872,7 @@
                 });
             };
 
+            // ATUALIZADO: Lógica de renderização de info simplificada
             const renderInfoSection = (type) => {
                 const infoData = checklistTemplates[type].info;
                 infoSectionContent.innerHTML = '';
@@ -820,38 +881,21 @@
 
                 if (infoData) {
                     infoSectionContainer.style.display = 'block';
-                    let atencaoHtml = `<div class="bg-white rounded-lg p-4 border"><h3 class="text-lg font-bold text-yellow-600 mb-3">PONTOS DE ATENÇÃO DA QUALIDADE</h3><table class="w-full text-left table-auto"><tbody>`;
                     
-                    const groupedAtencao = infoData.atencao.reduce((acc, item) => {
-                        const key = item.caracteristica;
-                        if (!acc[key]) {
-                            acc[key] = { caracteristica: key, pontos: [] };
-                        }
-                        acc[key].pontos.push(item.ponto);
-                        return acc;
-                    }, {});
-
-                    Object.values(groupedAtencao).forEach(group => {
-                        atencaoHtml += `<tr class="border-b"><td class="py-2 pr-4 font-semibold text-gray-700 align-top w-1/3">${group.caracteristica}</td><td class="py-2 text-gray-600">${group.pontos.join('<br>')}</td></tr>`;
+                    // Renderiza Pontos de Atenção
+                    let atencaoHtml = `<div class="bg-white rounded-lg p-4 border"><h3 class="text-lg font-bold text-yellow-600 mb-3">PONTOS DE ATENÇÃO DA QUALIDADE</h3><table class="w-full text-left table-auto"><tbody>`;
+                    infoData.atencao.forEach(item => {
+                        atencaoHtml += `<tr class="border-b"><td class="py-2 pr-4 font-semibold text-gray-700 align-top w-1/3">${item.caracteristica}</td><td class="py-2 text-gray-600">${item.ponto}</td></tr>`;
                     });
                     atencaoHtml += `</tbody></table></div>`;
 
-
+                    // Renderiza Dicas de Qualidade
                     let dicasHtml = `<div class="bg-white rounded-lg p-4 border mt-4"><h3 class="text-lg font-bold text-green-600 mb-3">DICAS DE QUALIDADE</h3><table class="w-full text-left table-auto"><tbody>`;
-                    
-                     const groupedDicas = infoData.dicas.reduce((acc, item) => {
-                        const key = item.caracteristica;
-                        if (!acc[key]) {
-                            acc[key] = { caracteristica: key, dicas: [] };
-                        }
-                        acc[key].dicas.push(item.dica);
-                        return acc;
-                    }, {});
-
-                    Object.values(groupedDicas).forEach(group => {
-                        dicasHtml += `<tr class="border-b"><td class="py-2 pr-4 font-semibold text-gray-700 align-top w-1/3">${group.caracteristica}</td><td class="py-2 text-gray-600">${group.dicas.join('<br>')}</td></tr>`;
+                    infoData.dicas.forEach(item => {
+                        dicasHtml += `<tr class="border-b"><td class="py-2 pr-4 font-semibold text-gray-700 align-top w-1/3">${item.caracteristica}</td><td class="py-2 text-gray-600">${item.dica}</td></tr>`;
                     });
                     dicasHtml += `</tbody></table></div>`;
+
                     infoSectionContent.innerHTML = atencaoHtml + dicasHtml;
                 } else {
                     infoSectionContainer.style.display = 'none';
