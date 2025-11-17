@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma de Controle Tecnológico</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Lato', sans-serif; }
+        
+        /* Estilos do Menu Lateral */
+        .nav-main-menu {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #4b5563; /* gray-600 */
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 0.375rem;
+            transition: background-color 0.2s;
+        }
+        .nav-main-menu:hover {
+            background-color: #f3f4f6; /* gray-100 */
+        }
+        .nav-main-menu svg {
+            transition: transform 0.2s;
+        }
+        .nav-main-menu.open svg {
+            transform: rotate(90deg);
+        }
+        
+        .nav-sub-menu {
+            display: none; /* Começa fechado */
+            padding-left: 1rem;
+            border-left: 1px solid #e5e7eb; /* gray-200 */
+            margin-left: 1rem;
+        }
+        .nav-sub-menu.open {
+            display: block;
+        }
+
+        .nav-link {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            transition: background-color 0.2s, color 0.2s;
+            font-weight: 500;
+            color: #374151; /* gray-700 */
+        }
+        .nav-link:hover {
+            background-color: #f3f4f6; /* gray-100 */
+        }
+        .nav-link.active {
+            background-color: #9FC419; /* Cor verde da marca */
+            color: white;
+            font-weight: 700;
+        }
+        .nav-placeholder {
+            color: #9ca3af; /* gray-400 */
+            cursor: not-allowed;
+            background-color: transparent !important;
+        }
+
+        .status-badge { padding: 0.25rem 0.75rem; border-radius: 9999px; font-weight: 500; font-size: 0.8rem; text-transform: uppercase; }
+        .status-conforme { background-color: #dcfce7; color: #166534; }
+        .status-nao_conforme { background-color: #fee2e2; color: #991b1b; }
+        .status-nao_realizado { background-color: #f1f5f9; color: #475569; }
+        .fade-in { animation: fadeIn 0.5s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        #toggle-info-btn svg { transition: transform 0.3s ease; }
+        #toggle-info-btn.open svg { transform: rotate(180deg); }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Cabeçalho Fixo -->
+    <header class="bg-[#01455C] text-white shadow-md fixed w-full top-0 left-0 z-20">
+        <div class="container mx-auto px-4 md:px-8 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold">Plataforma de Controle Tecnológico</h1>
+        </div>
+    </header>
+
+    <div class="flex">
+        <!-- Menu Lateral Fixo -->
+        <nav class="fixed w-72 bg-white h-full top-0 left-0 pt-20 z-10 border-r border-gray-200 overflow-y-auto pb-8">
+            <ul class="p-4 space-y-1">
+                <li>
+                    <button class="nav-link w-full text-left" data-view="dashboard">Início</button>
+                </li>
+                
+                <!-- 01. Serviços Preliminares -->
+                <li>
+                    <div class="nav-main-menu">
+                        <span>01. Serviços Preliminares</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </div>
+                    <ul class="nav-sub-menu">
+                        <li><button class="nav-link" data-view="aterro">01.01. Aterros</button></li>
+                    </ul>
+                </li>
+                
+                <!-- 02. Fundações -->
+                <li>
+                    <div class="nav-main-menu">
+                        <span>02. Fundações</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </div>
+                    <ul class="nav-sub-menu">
+                        <li><button class="nav-link" data-view="estacas">02.01. Estacas</button></li>
+                    </ul>
+                </li>
+                
+                <!-- 03. Estruturas -->
+                <li>
+                    <div class="nav-main-menu">
+                        <span>03. Estruturas</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </div>
+                    <ul class="nav-sub-menu">
+                        <li><button class="nav-link" data-view="alvenaria">03.01. Alvenaria Estrutural</button></li>
+                        <li><button class="nav-link" data-view="concreto">03.02. Concreto Armado</button></li>
+                    </ul>
+                </li>
+
+                <!-- 04. Vedações Verticais -->
+                <li>
+                    <div class="nav-main-menu">
+                        <span>04. Vedações Verticais</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </div>
+                    <ul class="nav-sub-menu">
+                        <li><button class="nav-link" data-view="alvenariaVedacao">04.01. Alvenaria de Vedação</button></li>
+                        <li><button class="nav-link" data-view="revestimento">04.02. Revest. de Argamassa</button></li>
+                        <li><button class="nav-link nav-placeholder" disabled>04.03. Revest. Cerâmico</button></li>
+                    </ul>
+                </li>
+
+                <!-- 05. Vedações Horizontais -->
+                <li>
+                    <div class="nav-main-menu">
+                        <span>05. Vedações Horizontais</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </div>
+                    <ul class="nav-sub-menu">
+                        <li><button class="nav-link" data-view="pisoCeramico">05.01. Piso Cerâmico</button></li>
+                        <li><button class="nav-link" data-view="impermeabilizacao">05.02. Impermeabilização</button></li>
+                        <li><button class="nav-link" data-view="forroGesso">05.03. Forro de Placa Lisa</button></li>
+                    </ul>
+                </li>
+
+                <!-- 06. Esquadrias -->
+                <li>
+                    <div class="nav-main-menu">
+                        <span>06. Esquadrias</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </div>
+                    <ul class="nav-sub-menu">
+                        <li><button class="nav-link nav-placeholder" disabled>06.01. Porta de madeira</button></li>
+                        <li><button class="nav-link" data-view="janelas">06.02. Janelas</button></li>
+                        <li><button class="nav-link" data-view="guardaCorpo">06.03. Guarda-Corpo</button></li>
+                    </ul>
+                </li>
+
+                <!-- 07. Pintura -->
+                <li><div class="nav-main-menu nav-placeholder" title="Em breve"><span>07. Pintura</span></div></li>
+                
+                <!-- 08. Sistemas Prediais -->
+                <li>
+                    <div class="nav-main-menu">
+                        <span>08. Sistemas Prediais</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </div>
+                    <ul class="nav-sub-menu">
+                        <li><button class="nav-link" data-view="agua">08.01. Água Fria e Quente</button></li>
+                        <li><button class="nav-link" data-view="esgoto">08.02. Esgoto</button></li>
+                        <li><button class="nav-link" data-view="gas">08.03. Gás</button></li>
+                        <li><button class="nav-link" data-view="eletrica">08.04. Instalação Elétrica</button></li>
+                    </ul>
+                </li>
+
+            </ul>
+        </nav>
+
+        <!-- Conteúdo Principal -->
+        <div class="flex-1 ml-72 mt-20">
+            <div class="container mx-auto p-4 md:p-8">
+                <main>
+                    <!-- VIEW: Dashboard Geral -->
+                    <div id="dashboard-view" class="view fade-in">
+                        <h2 class="text-2xl font-bold text-gray-700 mb-6">Resumo dos Controles Tecnológicos</h2>
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left table-auto">
+                                    <thead class="bg-gray-50 border-b">
+                                        <tr>
+                                            <th class="px-6 py-4 text-sm font-semibold text-gray-600">Tipo de Controle</th>
+                                            <th class="px-6 py-4 text-sm font-semibold text-gray-600 text-center">Nº de Registros</th>
+                                            <th class="px-6 py-4 text-sm font-semibold text-gray-600 text-center">KPI Médio</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="dashboard-table-body">
+                                        <tr>
+                                            <td colspan="3" class="text-center text-gray-500 p-8">
+                                                Conectando ao banco de dados...
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- VIEW: Lista de Registros (genérica) -->
+                    <div id="lista-registros-view" class="view hidden fade-in">
+                        
+                        <!-- Seção de Informações Adicionais -->
+                        <div id="info-section-container" class="mb-6">
+                            <button id="toggle-info-btn" class="flex items-center justify-between w-full text-left font-semibold text-lg text-gray-700 bg-gray-200 px-4 py-3 rounded-lg hover:bg-gray-300 focus:outline-none">
+                                <span>Pontos de Atenção & Dicas de Qualidade</span>
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+                            <div id="info-section-content" class="hidden mt-4 space-y-6">
+                                <!-- Conteúdo da Info Section será injetado aqui -->
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-lg shadow-md p-6">
+                            <div class="flex flex-col md:flex-row justify-between items-center mb-6">
+                                <h2 id="lista-registros-titulo" class="text-xl font-semibold text-gray-700"></h2>
+                                <button id="novo-registro-btn" class="w-full mt-4 md:mt-0 md:w-auto bg-[#01455C] hover:bg-[#01374A] text-white font-bold py-2 px-4 rounded-lg shadow-md">
+                                    Novo Registro
+                                </button>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left table-auto">
+                                    <thead class="bg-gray-50 border-b">
+                                        <tr>
+                                            <th class="px-4 py-3 text-sm font-semibold text-gray-600">Local / Identificação</th>
+                                            <th class="px-4 py-3 text-sm font-semibold text-gray-600">KPI Atendimento</th>
+                                            <th class="px-4 py-3 text-sm font-semibold text-gray-600 text-center">Ação</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tabela-registros-body"></tbody>
+                                </table>
+                                <p id="empty-state-lista" class="text-center text-gray-500 py-8 hidden">Nenhum registro encontrado.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- VIEW: Formulário de Checklist (genérico) -->
+                    <div id="formulario-checklist-view" class="view hidden fade-in">
+                        <div class="bg-white rounded-lg shadow-md p-6">
+                            <div class="flex flex-col md:flex-row justify-between items-center mb-4 border-b pb-4">
+                                <h2 id="formulario-titulo" class="text-xl font-semibold text-gray-700"></h2>
+                                <div class="flex items-center gap-2 mt-4 md:mt-0">
+                                    <label for="local-ensaio" class="font-semibold text-gray-600">Local/ID:</label>
+                                    <input type="text" id="local-ensaio" class="border border-gray-300 rounded-md px-2 py-1 focus:ring-[#01455C] focus:border-[#01455C]" placeholder="Ex: Estaca E-15">
+                                </div>
+                            </div>
+                            <div class="overflow-x-auto mt-6">
+                                <table class="w-full text-left table-auto">
+                                    <thead class="bg-gray-50 border-b">
+                                        <tr>
+                                            <th class="px-4 py-3 text-sm font-semibold text-gray-600">Característica</th>
+                                            <th class="px-4 py-3 text-sm font-semibold text-gray-600">Norma</th>
+                                            <th class="px-4 py-3 text-sm font-semibold text-gray-600">Status</th>
+                                            <th class="px-4 py-3 text-sm font-semibold text-gray-600">Data</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="checklist-body"></tbody>
+                                </table>
+                            </div>
+                            <div class="mt-8 flex justify-end gap-4">
+                                <button id="voltar-btn" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-lg">Voltar</button>
+                                <button id="salvar-registro-btn" class="bg-[#9FC419] hover:bg-[#8CB015] text-white font-bold py-2 px-4 rounded-lg">Salvar Registro</button>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        // Importar funções dos SDKs
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+
+        // Configuração do Firebase que você forneceu
+        const firebaseConfig = {
+            apiKey: "AIzaSyBiBiEqCLCmvPzgzpNbTmJjF6gEAh0w4YE",
+            authDomain: "controltec-47b67.firebaseapp.com",
+            projectId: "controltec-47b67",
+            storageBucket: "controltec-47b67.firebasestorage.app",
+            messagingSenderId: "398460970132",
+            appId: "1:398460970132:web:79429375dbdcf8ec4d0081",
+            measurementId: "G-4R6BW6KHV1"
+        };
+
+        // Inicializar Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        // --- Restante do seu script ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- ELEMENTOS DO DOM ---
+            const navMainMenus = document.querySelectorAll('.nav-main-menu');
+            const navButtons = document.querySelectorAll('.nav-link');
+            const views = document.querySelectorAll('.view');
+            const dashboardTableBody = document.getElementById('dashboard-table-body');
+            
+            const listaRegistrosView = document.getElementById('lista-registros-view');
+            const infoSectionContainer = document.getElementById('info-section-container');
+            const toggleInfoBtn = document.getElementById('toggle-info-btn');
+            const infoSectionContent = document.getElementById('info-section-content');
+            const listaRegistrosTitulo = document.getElementById('lista-registros-titulo');
+            const tabelaRegistrosBody = document.getElementById('tabela-registros-body');
+            const emptyStateLista = document.getElementById('empty-state-lista');
+            const novoRegistroBtn = document.getElementById('novo-registro-btn');
+
+            const formularioView = document.getElementById('formulario-checklist-view');
+            const formularioTitulo = document.getElementById('formulario-titulo');
+            const localInput = document.getElementById('local-ensaio');
+            const checklistBody = document.getElementById('checklist-body');
+            const salvarRegistroBtn = document.getElementById('salvar-registro-btn');
+            const voltarBtn = document.getElementById('voltar-btn');
+            
+            // --- ESTRUTURA DE DADOS E TEMPLATES ---
+            const statusMap = {
+                conforme: { text: 'Conforme', class: 'status-conforme' },
+                nao_conforme: { text: 'Não Conforme', class: 'status-nao_conforme' },
+                nao_realizado: { text: 'Não Realizado', class: 'status-nao_realizado' },
+            };
+
+            // Todos os seus templates de checklist
+            const checklistTemplates = {
+                aterro: {
+                    title: '01.01. Aterros',
+                    ensaios: [
+                        { id: 1, caracteristica: 'Compactação', norma: 'NBR 7182' },
+                        { id: 2, caracteristica: 'Massa específica aparente seca in situ', norma: 'NBR 5681' },
+                        { id: 3, caracteristica: 'Granulometria por peneiramento', norma: 'NBR 7181' },
+                        { id: 4, caracteristica: 'Limite de liquidez', norma: 'NBR 6459' },
+                        { id: 5, caracteristica: 'Limite de plasticidade', norma: 'NBR 7180' }
+                    ],
+                    info: {
+                        atencao: [
+                            { caracteristica: 'Compactação', ponto: 'Devem ser feitos nove ensaios de compactação para cada 1.000 m³ de um mesmo material; para volumes maiores que 9.000 m³ deve ser acrescido um ensaio.' },
+                            { caracteristica: 'Massa específica aparente seca in situ', ponto: 'Devem ser feitos nove ensaios para determinação da massa específica aparente seca in situ, para cada 500 m³ de material compactado; para volumes maiores que 4.500 m³ deve ser acrescido um ensaio.' },
+                            { caracteristica: 'Limite de liquidez e plasticidade', ponto: 'Devem ser feitos nove ensaios, para cada grupo de amostras submetidas ao ensaio de compactação; para volumes maiores que 9.000 m³ deve ser acrescido um ensaio.' },
+                        ],
+                        dicas: [
+                            { caracteristica: 'Compactação / Massa específica', dica: 'Conforme a NBR 5681, camadas de aterro que não tenham atingido as condições mínimas de compactação devem ser escarificadas, homogeneizadas, levadas à umidade adequada e novamente compactadas, antes do lançamento da camada sobrejacente.' },
+                            { caracteristica: 'Granulometria / Limites', dica: 'São ensaios de caracterização do solo, indicando a granulometria e os valores de umidade que determinam a faixa de trabalho de umidade do solo para realizar a compactação do aterro e obtenção do grau de compactação desejado.' }
+                        ]
+                    }
+                },
+                estacas: {
+                    title: '02.01. Estacas',
+                    ensaios: [
+                        { id: 1, caracteristica: 'Prova de carga estática', norma: 'NBR 16203' }
+                    ],
+                    info: {
+                        atencao: [
+                            { caracteristica: 'Prova de carga estática', ponto: 'O número de provas de carga deve ser de 1% do número total de estacas da obra (arredondando para uma casa decimal, em seguida arredondar o número obtido para o número inteiro mais próximo, com dígito 5 sempre arredondado para cima).' },
+                            { caracteristica: 'Prova de carga estática', ponto: 'Pelo menos uma prova de carga estática ou ensaio de carregamento dinâmico devem ser feitos nas estacas da edificação principal da obra.' }
+                        ],
+                        dicas: [
+                            { caracteristica: 'Prova de carga estática', dica: 'Se esse valor da carga de ruptura não for obtido, a interpretação dos resultados deve ser feita pelo projetista.'},
+                            { caracteristica: 'Prova de carga estática', dica: 'Se os resultados da prova de carga estática não forem satisfatórios, deve-se informar ao projetista e solicitar que ele estude a situação para indicar as ações necessárias.' }
+                        ]
+                    }
+                },
+                alvenaria: {
+                    title: '03.01. Alvenaria Estrutural',
+                    ensaios: [
+                        { id: 1, caracteristica: 'Blocos - Resistência à compressão', norma: 'NBR 15270-1' },
+                        { id: 2, caracteristica: 'Blocos - Absorção de água', norma: 'NBR 15270-1' },
+                        { id: 3, caracteristica: 'Blocos - Dimensões', norma: 'NBR 15270-1' },
+                        { id: 4, caracteristica: 'Argamassa - Resistência à compressão', norma: 'NBR 13279' },
+                        { id: 5, caracteristica: 'Argamassa - Retenção de água', norma: 'NBR 13278' },
+                        { id: 6, caracteristica: 'Argamassa - Teor de ar incorporado', norma: 'NBR 13277' },
+                        { id: 7, caracteristica: 'Argamassa - Densidade de massa', norma: 'NBR 13277' },
+                        { id: 8, caracteristica: 'Argamassa - Tempo em aberto', norma: 'NBR 14081-3' },
+                        { id: 9, caracteristica: 'Graute - Resistência à compressão', norma: 'NBR 5739' },
+                        { id: 10, caracteristica: 'Prismas - Resistência à compressão', norma: 'NBR 15961-1' }
+                    ],
+                    info: {
+                        atencao: [
+                            { caracteristica: 'Blocos', ponto: 'Ensaios devem ser feitos antes do início da obra e a cada 50.000 blocos. Devem ser ensaiados 13 blocos por lote.' },
+                            { caracteristica: 'Argamassa', ponto: 'Ensaios devem ser feitos antes do início da obra. A cada 3.000 m² ou 10 pavimentos. 12 corpos de prova por lote.' },
+                            { caracteristica: 'Graute', ponto: 'Deve ser controlado pelo menos a resistência à compressão. Um lote para cada 50 m³ de área construída ou um lote por pavimento. 2 corpos de prova por pavimento.' },
+                            { caracteristica: 'Prismas', ponto: 'Devem ser moldados 6 prismas (3 para 14 dias, 3 para 28 dias). A cada 1.000 m². Amostras de graute devem ser coletadas. A resistência de projeto deve ser fpk.' }
+                        ],
+                        dicas: [
+                            { caracteristica: 'Blocos', dica: 'Blocos devem ser entregues paletizados e identificados. Armazenar em local plano e proteger contra umidade excessiva.'},
+                            { caracteristica: 'Argamassa', dica: 'Utilizar argamassa industrializada garante maior controle. A argamassa deve ser misturada com a quantidade de água indicada pelo fabricante.'},
+                            { caracteristica: 'Graute', dica: 'Caso os resultados não sejam os especificados, comunicar ao projetista estrutural e discutir as ações de remediação.' },
+                            { caracteristica: 'Prismas', dica: 'Aumentar a rastreabilidade dos materiais. Acompanhar a cura dos corpos de prova. Em caso de não atendimento, o projetista deve ser consultado.' }
+                        ]
+                    }
+                },
+                concreto: {
+                    title: '03.02. Concreto Armado',
+                    ensaios: [
+                        { id: 1, caracteristica: 'Abatimento (Slump Test)', norma: 'NBR NM 67' },
+                        { id: 2, caracteristica: 'Resistência à compressão', norma: 'NBR 5739' },
+                        { id: 3, caracteristica: 'Módulo de elasticidade', norma: 'NBR 8522-1' }
+                    ],
+                    info: {
+                        atencao: [
+                            { caracteristica: 'Abatimento (Slump Test)', ponto: 'Para o controle do concreto, a cada betonada deve ser moldado no mínimo um exemplar para ensaio de compressão.' },
+                            { caracteristica: 'Resistência à compressão', ponto: 'A amostragem deve ser realizada no caminhão betoneira do trecho correspondente a 1/4 e 3/4 do volume de descarga. Corpos de prova devem ser rompidos nas idades de controle. A cura e o transporte devem seguir as premissas da NBR 5738.' },
+                            { caracteristica: 'Módulo de elasticidade', ponto: 'Para cada determinação do módulo de elasticidade, deve-se ensaiar três corpos de prova, conforme estabelecido na NBR 8522.' }
+                        ],
+                        dicas: [
+                            { caracteristica: 'Abatimento (Slump Test)', dica: 'Conforme a NBR 7212, o abatimento é uma medida da consistência do concreto fresco para garantir a trabalhabilidade. O abatimento deve ser verificado e os resultados devem ser compatíveis com o fck do projeto. A NBR 6118 define os limites de abatimento (slump).'},
+                            { caracteristica: 'Resistência à compressão', dica: 'Quando o valor do resultado do ensaio de um exemplar for menor que o fck, um novo ensaio deve ser realizado. Se o novo resultado for satisfatório, o lote pode ser aceito. Se a resistência do concreto não for a ideal, os elementos estruturais podem ser reforçados ou demolidos.' },
+                            { caracteristica: 'Módulo de elasticidade', dica: 'Ação que não seja compatível com o previsto em projeto só pode ser efetuada com autorização do projetista estrutural e do engenheiro da obra.' }
+                        ]
+                    }
+                },
+                alvenariaVedacao: {
+                    title: '04.01. Alvenaria de Vedação',
+                    ensaios: [
+                        { id: 1, caracteristica: 'Resist. à compressão (Bloco)', norma: 'NBR 6136' },
+                        { id: 2, caracteristica: 'Absorção de água (Bloco)', norma: 'NBR 6136' },
+                        { id: 3, caracteristica: 'Resist. à compressão (Argamassa)', norma: 'NBR 13279' },
+                        { id: 4, caracteristica: 'Retenção de água (Argamassa)', norma: 'NBR 13278' },
+                        { id: 5, caracteristica: 'Teor de ar (Argamassa)', norma: 'NBR 13277' },
+                        { id: 6, caracteristica: 'Densidade de massa (Argamassa)', norma: 'NBR 13277' }
+                    ],
+                    info: {
+                        atencao: [
+                            { caracteristica: 'Blocos', ponto: 'Um lote para cada 50.000 blocos, antes do início da obra.' },
+                            { caracteristica: 'Argamassa', ponto: 'Um lote para cada 3.000 m² de alvenaria ou 10 pavimentos.' }
+                        ],
+                        dicas: [
+                            { caracteristica: 'Blocos', dica: 'Armazenar em local protegido, sobre paletes.' },
+                            { caracteristica: 'Argamassa', dica: 'Garantir rastreabilidade. Em caso de não conformidade, consultar o projetista.' },
+                            { caracteristica: 'Geral', dica: 'A resistência da alvenaria de vedação deve ser compatível com o fck do projeto.' }
+                        ]
+                    }
+                },
+                revestimento: {
+                    title: '04.02. Revest. de Argamassa',
+                    ensaios: [
+                        { id: 1, caracteristica: 'Resistência à compressão', norma: 'NBR 13279' },
+                        { id: 2, caracteristica: 'Retenção de água', norma: 'NBR 13278' },
+                        { id: 3, caracteristica: 'Teor de ar incorporado', norma: 'NBR 13277' },
+                        { id: 4, caracteristica: 'Densidade de massa', norma: 'NBR 13277' },
+                        { id: 5, caracteristica: 'Tempo em aberto', norma: 'NBR 14081-3' }
+                    ],
+                    info: {
+                        atencao: [
+                            { caracteristica: 'Amostragem', ponto: 'Os ensaios de argamassa (industrializada ou dosada em obra) devem ser realizados em laboratório para aprovação, antes do início da aplicação.'},
+                            { caracteristica: 'Frequência', ponto: 'A cada 2.000 m² de revestimento aplicado, de um mesmo pavimento ou de uma mesma argamassa, deve ser coletada uma amostra.' },
+                            { caracteristica: 'Corpos de Prova', ponto: 'Deve ser moldado 1 corpo de prova (para ensaio de resistência à compressão) para cada 200 m² de revestimento ou para cada pavimento.' }
+                        ],
+                        dicas: [
+                            { caracteristica: 'Rastreabilidade', dica: 'A rastreabilidade dos materiais deve ser garantida com o arquivamento das notas fiscais e certificados de qualidade.'},
+                            { caracteristica: 'Armazenamento', dica: 'O armazenamento dos sacos de argamassa deve ser em local seco, ventilado, sobre paletes e afastado no mínimo 30 cm das paredes.'},
+                            { caracteristica: 'Execução', dica: 'A argamassa deve ser misturada mecanicamente com a quantidade de água indicada pelo fabricante, até a obtenção de uma mistura homogênea.'},
+                            { caracteristica: 'Resultados', dica: 'Caso os resultados não sejam satisfatórios, deve-se comunicar o projetista de revestimentos e a empresa, para discutir as ações de remediação.'}
+                        ]
+                    }
+                },
+                pisoCeramico: {
+                    title: '05.01. Piso Cerâmico',
+                    ensaios: [
+                        { id: 1, caracteristica: 'Resistência de aderência à tração', norma: 'NBR 13753 - Anexo A' }
+                    ],
+                    info: {
+                        atencao: [
+                            { caracteristica: 'Resist. de aderência', ponto: 'Deve ser realizado 1 ensaio para cada 200 m² de área ou 1 ensaio por pavimento.' }
+                        ],
+                        dicas: [
+                            { caracteristica: 'Resist. de aderência', dica: 'O piso com som "oco" (som cavo) indica falhas na aderência da argamassa colante, devendo o trecho ser removido e reaplicado.' }
+                        ]
+                    }
+                },
+                impermeabilizacao: {
+                    title: '05.02. Impermeabilização',
+                    ensaios: [
+                        { id: 1, caracteristica: 'Estanqueidade à água', norma: 'NBR 9574' }
+                    ],
+                    info: {
+                        atencao: [
+                            { caracteristica: 'Estanqueidade', ponto: 'A lâmina d\'água recomendada para o teste é de 50 a 100 mm de altura.' }
+                        ],
+                        dicas: [
+                            { caracteristica: 'Estanqueidade', dica: 'A impermeabilização que tenha falha detectada no teste de estanqueidade deve ser removida e refeita no trecho afetado.' }
+                        ]
+                    }
+                },
+                forroGesso: {
+                    title: '05.03. Forro de Placa Lisa de Gesso',
+                    ensaios: [
+                        { id: 1, caracteristica: 'Resistência à flexão', norma: 'NBR 13776' },
+                        { id: 2, caracteristica: 'Arranhamento', norma: 'NBR 16382' }
+                    ],
+                    info: {
+                        atencao: [
+                            { caracteristica: 'Resist. à flexão', ponto: 'Um lote é o conjunto de até 12 toneladas. A amostragem é de 10 placas, se no lote o número de placas defeituosas for 1, o lote pode ser aceito.' },
+                            { caracteristica: 'Arranhamento', ponto: 'Se o lote não for aceito na primeira amostragem, um novo lote com 10 placas é ensaiado. Se o número de placas defeituosas for no máximo 3 placas, o lote é aceito.' }
+                        ],
+                        dicas: [
+                            { caracteristica: 'Resist. à flexão', dica: 'O lote é rejeitado se houver mais de 3 placas defeituosas na segunda amostragem. A placa que não atender ao requisito de resistência à flexão é rejeitada.' },
+                            { caracteristica: 'Arranhamento', dica: 'Se houver mais de 10% do lote com trincas, quebras ou defeitos, o lote deve ser rejeitado.' }
+                        ]
+                    }
+                },
+                janelas: {
+                    title: '06.02. Janelas',
+                    ensaios: [
+                        { id: 1, caracteristica: 'Estanqueidade à água', norma: 'NBR 10821-3' },
+                        { id: 2, caracteristica: 'Permeabilidade ao ar', norma: 'NBR 10821-3' },
+                        { id: 3, caracteristica: 'Resist. a cargas de vento', norma: 'NBR 10821-3' },
+                        { id: 4, caracteristica: 'Segurança (Impacto)', norma: 'NBR 11706' },
+                        { id: 5, caracteristica: 'Isolação sonora', norma: 'ISO 10140-2' }
+                    ],
+                    info: {
+                        atencao: [
+                            { caracteristica: 'Geral', ponto: 'O corpo de prova a ser ensaiado deve ser instalado no laboratório de ensaio da mesma forma que é instalado na obra, com os mesmos materiais e contramarcos.' }
+                        ],
+                        dicas: [
+                            { caracteristica: 'Geral', dica: 'Cuidado com os vidros de controle solar ou de segurança, qualquer avaria pode comprometer o desempenho da esquadria.' }
+                        ]
+                    }
+                },
+                guardaCorpo: {
+                    title: '06.03. Guarda-Corpo',
+                    ensaios: [
+                        { id: 1, caracteristica: 'Esforço estático horizontal', norma: 'NBR 14718' },
+                        { id: 2, caracteristica: 'Esforço estático vertical', norma: 'NBR 14718' },
+                        { id: 3, caracteristica: 'Resist. a impactos (corpo mole)', norma: 'NBR 14718' },
+                        { id: 4, caracteristica: 'Resist. a impactos (corpo duro)', norma: 'NBR 14718' },
+                        { id: 5, caracteristica: 'Corrosão (Névoa salina)', norma: 'NBR 8094' }
+                    ],
+                    info: {
+                        atencao: [
+                            { caracteristica: 'Amostragem', ponto: '1 amostra para cada 500 m de guarda-corpo ou 2 amostras por pavimento.' },
+                            { caracteristica: 'Ancoragem', ponto: 'A ancoragem do guarda-corpo deve ser realizada em uma laje ou viga de concreto que simule as condições de ancoragem da obra.' }
+                        ],
+                        dicas: [
+                            { caracteristica: 'Segurança', dica: 'O guarda-corpo não pode ser escalável (vãos e aberturas conforme NBR 9050) e deve ter altura mínima de 1,10 m.' }
+                        ]
+                    }
+                },
+                agua: {
+                    title: '08.01. Água Fria e Quente',
+                    ensaios: [
+                        { id: 1, caracteristica: 'Estanqueidade (Tubulações)', norma: 'NBR 5626' },
+                        { id: 2, caracteristica: 'Limpeza/Desinfecção (Reservatórios)', norma: 'NBR 5626' },
+                        { id: 3, caracteristica: 'Funcionamento (Bombas)', norma: 'NBR 5626' },
+                        { id: 4, caracteristica: 'Funcionamento (Aquecedores)', norma: 'NBR 5626' }
+                    ],
+                    info: {
+                        atencao: [
+                            { caracteristica: 'Tubulações', ponto: 'O ensaio de estanqueidade deve ser realizado antes da instalação dos aparelhos sanitários.' },
+                            { caracteristica: 'Reservatórios', ponto: 'Antes do ensaio de estanqueidade, o reservatório deve ser limpo e desinfetado.' },
+                            { caracteristica: 'Bombas', ponto: 'O ensaio de funcionamento deve ser realizado após a instalação das bombas.' }
+                        ],
+                        dicas: [
+                            { caracteristica: 'Tubulações', dica: 'A pressão de ensaio deve ser 1,5 vezes a pressão de trabalho, com no mínimo 150 kPa.' },
+                            { caracteristica: 'Reservatórios', dica: 'O reservatório deve ser enchido com água e mantido por 72 horas para verificação de vazamentos.' },
+                            { caracteristica: 'Geral', dica: 'Em caso de não conformidade, o trecho deve ser refeito e um novo ensaio deve ser realizado.' }
+                        ]
+                    }
+                },
+                esgoto: {
+                    title: '08.02. Sistemas Prediais de Esgoto',
+                    ensaios: [
+                        { id: 1, caracteristica: 'Estanqueidade (Tubulações)', norma: 'NBR 8160' },
+                        { id: 2, caracteristica: 'Estanqueidade (com Aparelhos)', norma: 'NBR 8160' }
+                    ],
+                    info: {
+                        atencao: [
+                            { caracteristica: 'Tubulações', ponto: 'O ensaio de estanqueidade deve ser realizado com água, antes do fechamento das paredes.' },
+                            { caracteristica: 'Com Aparelhos', ponto: 'Todos os ramais do sistema devem ser testados.' }
+                        ],
+                        dicas: [
+                            { caracteristica: 'Tubulações', dica: 'Se for constatado vazamento, o trecho deve ser localizado e reparado.' },
+                            { caracteristica: 'Com Aparelhos', dica: 'Se for constatado vazamento, o trecho deve ser localizado e reparado.' }
+                        ]
+                    }
+                },
+                gas: {
+                    title: '08.03. Sistemas Prediais de Gás',
+                    ensaios: [
+                        { id: 1, caracteristica: 'Estanqueidade (Tubulações)', norma: 'NBR 15526' }
+                    ],
+                    info: {
+                        atencao: [
+                            { caracteristica: 'Estanqueidade', ponto: 'Toda a rede deve ser ensaiada.' },
+                            { caracteristica: 'Estanqueidade', ponto: 'O ensaio deve ser realizado com ar comprimido ou gás inerte.' }
+                        ],
+                        dicas: [
+                            { caracteristica: 'Estanqueidade', dica: 'Se for observada uma diminuição da pressão de ensaio, o vazamento deve ser localizado e reparado.' }
+                        ]
+                    }
+                },
+                eletrica: {
+                    title: '08.04. Instalação Elétrica',
+                    ensaios: [
+                        { id: 1, caracteristica: 'Continuidade dos condutores', norma: 'NBR 5410' },
+                        { id: 2, caracteristica: 'Resist. de isolamento', norma: 'NBR 5410' },
+                        { id: 3, caracteristica: 'Ensaios de tensão', norma: 'NBR 5410' },
+                        { id: 4, caracteristica: 'Seccionamento automático', norma: 'NBR 5410' },
+                        { id: 5, caracteristica: 'Tensão aplicada', norma: 'NBR 5410' },
+                        { id: 6, caracteristica: 'Funcionalidade', norma: 'NBR 5410' }
+                    ],
+                    info: {
+                        atencao: [
+                            { caracteristica: 'Geral', ponto: 'A instalação deve ser inspecionada por profissional habilitado.' },
+                            { caracteristica: 'Segurança', ponto: 'Todos os circuitos do sistema elétrico devem ser ensaiados.' }
+                        ],
+                        dicas: [
+                            { caracteristica: 'Geral', dica: 'No caso de não conformidade, a instalação deve ser reparada, e o ensaio repetido.' }
+                        ]
+                    }
+                },
+            };
+
+            // ---- LÓGICA DO FIREBASE ----
+
+            // Substitui o `localStorage` por um objeto em memória
+            let database = {}; 
+            
+            let currentState = { view: 'dashboard', type: null };
+            let authReady = false; // Flag para saber se a autenticação foi concluída
+
+            // Função para configurar os listeners em tempo real
+            const setupRealtimeListeners = () => {
+                Object.keys(checklistTemplates).forEach(type => {
+                    // Inicializa o tipo no objeto de banco de dados
+                    database[type] = [];
+                    const collectionRef = collection(db, type);
+                    
+                    onSnapshot(collectionRef, (snapshot) => {
+                        console.log(`Firebase: Dados recebidos para '${type}'`);
+                        // Mapeia os documentos do Firestore para o nosso objeto `database`
+                        database[type] = snapshot.docs.map(doc => ({
+                            id: doc.id, // Adiciona o ID único do Firestore
+                            ...doc.data()
+                        }));
+                        
+                        // Re-renderiza a UI com os dados atualizados
+                        render();
+                    }, (error) => {
+                        console.error(`Firebase: Erro ao ouvir a coleção '${type}': `, error);
+                    });
+                });
+            };
+
+            // Autenticação anônima
+            signInAnonymously(auth)
+                .then(() => {
+                    console.log("Firebase: Usuário anônimo conectado.");
+                    authReady = true;
+                    // Agora que estamos autenticados, começamos a ouvir o banco de dados
+                    setupRealtimeListeners();
+                })
+                .catch((error) => {
+                    console.error("Firebase: Erro na autenticação anônima", error);
+                });
+            
+            // --- FUNÇÕES DE LÓGICA ---
+            
+            // Não precisamos mais de saveToLocalStorage()
+
+            const calculateKPI = (ensaios) => {
+                const realizados = ensaios.filter(e => e.status === 'conforme' || e.status === 'nao_conforme');
+                if (realizados.length === 0) return 0;
+                const conformes = realizados.filter(e => e.status === 'conforme').length;
+                return Math.round((conformes / realizados.length) * 100);
+            };
+            
+            // --- FUNÇÕES DE RENDERIZAÇÃO ---
+            const render = () => {
+                // Não renderiza nada se a autenticação e os listeners não estiverem prontos
+                if (!authReady) return; 
+
+                views.forEach(v => v.classList.add('hidden'));
+                navButtons.forEach(b => b.classList.remove('active'));
+
+                const activeNav = document.querySelector(`.nav-link[data-view="${currentState.view === 'form' ? currentState.type : currentState.view}"]`);
+                
+                if (activeNav) {
+                    activeNav.classList.add('active');
+                    const parentSubMenu = activeNav.closest('.nav-sub-menu');
+                    if (parentSubMenu) {
+                        parentSubMenu.classList.add('open');
+                        parentSubMenu.previousElementSibling.classList.add('open');
+                    }
+                }
+
+                switch (currentState.view) {
+                    case 'dashboard':
+                        document.getElementById('dashboard-view').classList.remove('hidden');
+                        renderDashboard();
+                        break;
+                    case 'aterro':
+                    case 'concreto':
+                    case 'estacas':
+                    case 'alvenaria':
+                    case 'revestimento':
+                    case 'alvenariaVedacao':
+                    case 'pisoCeramico':
+                    case 'impermeabilizacao':
+                    case 'forroGesso':
+                    case 'janelas':
+                    case 'guardaCorpo':
+                    case 'agua':
+                    case 'esgoto':
+                    case 'gas':
+                    case 'eletrica':
+                        listaRegistrosView.classList.remove('hidden');
+                        renderListaRegistros(currentState.view);
+                        break;
+                    case 'form':
+                        formularioView.classList.remove('hidden');
+                        renderFormulario(currentState.type, currentState.recordId);
+                        break;
+                }
+            };
+
+            const renderDashboard = () => {
+                dashboardTableBody.innerHTML = '';
+                if (Object.keys(database).length === 0) {
+                     dashboardTableBody.innerHTML = `<tr><td colspan="3" class="text-center text-gray-500 p-8">Carregando...</td></tr>`;
+                     return;
+                }
+                
+                Object.keys(checklistTemplates).forEach(type => {
+                    const registros = database[type] || []; // Pega os dados do objeto em memória
+                    const totalKPI = registros.reduce((acc, reg) => acc + reg.kpi, 0);
+                    const mediaKPI = registros.length > 0 ? Math.round(totalKPI / registros.length) : 0;
+                    const kpiColor = mediaKPI >= 95 ? 'text-[#9FC419]' : (mediaKPI >= 70 ? 'text-yellow-500' : 'text-red-500');
+
+                    const tr = document.createElement('tr');
+                    tr.className = 'border-b hover:bg-gray-50';
+                    tr.innerHTML = `
+                        <td class="px-6 py-4 font-medium text-gray-800">${checklistTemplates[type].title}</td>
+                        <td class="px-6 py-4 text-gray-600 text-center">${registros.length}</td>
+                        <td class="px-6 py-4 font-bold text-center text-xl ${kpiColor}">${mediaKPI}%</td>
+                    `;
+                    dashboardTableBody.appendChild(tr);
+                });
+            };
+
+            const renderInfoSection = (type) => {
+                const infoData = checklistTemplates[type].info;
+                infoSectionContent.innerHTML = '';
+                infoSectionContent.classList.add('hidden'); 
+                toggleInfoBtn.classList.remove('open');
+
+                if (infoData) {
+                    infoSectionContainer.style.display = 'block';
+                    let atencaoHtml = `<div class="bg-white rounded-lg p-4 border"><h3 class="text-lg font-bold text-yellow-600 mb-3">PONTOS DE ATENÇÃO DA QUALIDADE</h3><table class="w-full text-left table-auto"><tbody>`;
+                    infoData.atencao.forEach(item => {
+                        atencaoHtml += `<tr class="border-b"><td class="py-2 pr-4 font-semibold text-gray-700 align-top w-1/3">${item.caracteristica}</td><td class="py-2 text-gray-600">${item.ponto}</td></tr>`;
+                    });
+                    atencaoHtml += `</tbody></table></div>`;
+
+                    let dicasHtml = `<div class="bg-white rounded-lg p-4 border mt-4"><h3 class="text-lg font-bold text-green-600 mb-3">DICAS DE QUALIDADE</h3><table class="w-full text-left table-auto"><tbody>`;
+                    infoData.dicas.forEach(item => {
+                        dicasHtml += `<tr class="border-b"><td class="py-2 pr-4 font-semibold text-gray-700 align-top w-1/3">${item.caracteristica}</td><td class="py-2 text-gray-600">${item.dica}</td></tr>`;
+                    });
+                    dicasHtml += `</tbody></table></div>`;
+                    infoSectionContent.innerHTML = atencaoHtml + dicasHtml;
+                } else {
+                    infoSectionContainer.style.display = 'none';
+                }
+            };
+
+            const renderListaRegistros = (type) => {
+                renderInfoSection(type);
+                listaRegistrosTitulo.textContent = `Registros de ${checklistTemplates[type].title}`;
+                const registros = database[type] || []; // Pega os dados do objeto em memória
+                tabelaRegistrosBody.innerHTML = '';
+                
+                emptyStateLista.classList.toggle('hidden', registros.length > 0);
+
+                registros.forEach(registro => {
+                    const kpiColor = registro.kpi >= 95 ? 'text-[#9FC419]' : (registro.kpi >= 70 ? 'text-yellow-500' : 'text-red-500');
+                    const tr = document.createElement('tr');
+                    tr.className = 'border-b hover:bg-gray-50';
+                    tr.innerHTML = `
+                        <td class="px-4 py-4 font-medium text-gray-800">${registro.local}</td>
+                        <td class="px-4 py-4 font-bold ${kpiColor}">${registro.kpi}%</td>
+                        <td class="px-4 py-4 text-center">
+                            <button class="bg-gray-200 text-[#01455C] hover:bg-gray-300 font-medium py-1 px-3 rounded-md view-details-btn" data-id="${registro.id}">
+                                Visualizar
+                            </button>
+                        </td>
+                    `;
+                    tabelaRegistrosBody.appendChild(tr);
+                });
+            };
+
+            const renderFormulario = (type, recordId = null) => {
+                const template = checklistTemplates[type];
+                let registro = null;
+                let isReadOnly = false;
+
+                if (recordId) {
+                    // Busca o registro no objeto em memória usando o ID do Firestore
+                    registro = (database[type] || []).find(r => r.id === recordId);
+                    isReadOnly = true;
+                }
+
+                formularioTitulo.textContent = template.title;
+                localInput.value = registro ? registro.local : '';
+                localInput.disabled = isReadOnly;
+                salvarRegistroBtn.style.display = isReadOnly ? 'none' : 'block';
+
+                const ensaiosParaRenderizar = registro ? registro.ensaios : template.ensaios.map(e => ({...e, status: 'nao_realizado', data: ''}));
+                
+                checklistBody.innerHTML = '';
+                ensaiosParaRenderizar.forEach(ensaio => {
+                    const statusInfo = statusMap[ensaio.status];
+                    const dataFormatada = ensaio.data ? new Date(ensaio.data + 'T00:00:00').toLocaleDateString('pt-BR') : '---';
+                    const tr = document.createElement('tr');
+                    tr.className = 'border-b';
+                    tr.innerHTML = `
+                        <td class="px-4 py-3 font-medium text-gray-800">${ensaio.caracteristica}</td>
+                        <td class="px-4 py-3 text-gray-600">${ensaio.norma}</td>
+                        <td class="px-4 py-3">
+                            ${isReadOnly ? `<span class="status-badge ${statusInfo.class}">${statusInfo.text}</span>` : `
+                            <select data-ensaio-id="${ensaio.id}" class="status-select w-full p-1 border-gray-300 rounded-md focus:ring-[#01455C] focus:border-[#01455C]">
+                                <option value="nao_realizado" ${ensaio.status === 'nao_realizado' ? 'selected' : ''}>Não Realizado</option>
+                                <option value="conforme" ${ensaio.status === 'conforme' ? 'selected' : ''}>Conforme</option>
+                                <option value="nao_conforme" ${ensaio.status === 'nao_conforme' ? 'selected' : ''}>Não Conforme</option>
+                            </select>
+                            `}
+                        </td>
+                        <td class="px-4 py-3">
+                            ${isReadOnly ? dataFormatada : `
+                            <input type="date" data-ensaio-id="${ensaio.id}" value="${ensaio.data || ''}" class="data-input w-full p-1 border-gray-300 rounded-md focus:ring-[#01455C] focus:border-[#01455C]">
+                            `}
+                        </td>
+                    `;
+                    checklistBody.appendChild(tr);
+                });
+            };
+            
+            // --- EVENT LISTENERS ---
+            navMainMenus.forEach(menu => {
+                if (menu.classList.contains('nav-placeholder')) return;
+                menu.addEventListener('click', () => {
+                    const subMenu = menu.nextElementSibling;
+                    subMenu.classList.toggle('open');
+                    menu.classList.toggle('open');
+                });
+            });
+            
+            navButtons.forEach(button => {
+                if (button.classList.contains('nav-placeholder')) return;
+                button.addEventListener('click', () => {
+                    currentState.view = button.dataset.view;
+                    currentState.type = button.dataset.view;
+                    render();
+                });
+            });
+
+            toggleInfoBtn.addEventListener('click', () => {
+                infoSectionContent.classList.toggle('hidden');
+                toggleInfoBtn.classList.toggle('open');
+            });
+
+            novoRegistroBtn.addEventListener('click', () => {
+                currentState.view = 'form';
+                currentState.recordId = null;
+                render();
+            });
+
+            voltarBtn.addEventListener('click', () => {
+                currentState.view = currentState.type;
+                currentState.recordId = null;
+                render();
+            });
+
+            // ATUALIZADO: Salvar no Firebase
+            salvarRegistroBtn.addEventListener('click', async () => {
+                const local = localInput.value.trim();
+                if (!local) {
+                    alert('Por favor, preencha o campo "Local/ID".');
+                    return;
+                }
+                
+                const tipoAtual = currentState.type;
+                const ensaiosTemplate = checklistTemplates[tipoAtual].ensaios;
+                const ensaiosDoRegistro = ensaiosTemplate.map(template => {
+                    const statusSelect = checklistBody.querySelector(`.status-select[data-ensaio-id="${template.id}"]`);
+                    const dataInput = checklistBody.querySelector(`.data-input[data-ensaio-id="${template.id}"]`);
+                    return {
+                        ...template,
+                        status: statusSelect ? statusSelect.value : 'nao_realizado',
+                        data: dataInput ? dataInput.value : ''
+                    };
+                });
+                
+                const novoRegistro = {
+                    local: local,
+                    kpi: calculateKPI(ensaiosDoRegistro),
+                    ensaios: ensaiosDoRegistro
+                    // ID será gerado pelo Firestore
+                };
+                
+                try {
+                    // Salva na coleção correta no Firestore
+                    const collectionRef = collection(db, tipoAtual);
+                    await addDoc(collectionRef, novoRegistro);
+                    
+                    // Sucesso! Volta para a lista
+                    // O onSnapshot vai atualizar a lista automaticamente
+                    currentState.view = tipoAtual;
+                    render();
+
+                } catch (e) {
+                    console.error("Firebase: Erro ao adicionar documento: ", e);
+                    alert("Erro ao salvar o registro. Verifique o console.");
+                }
+            });
+            
+            // ATUALIZADO: Ler o ID do Firestore
+            tabelaRegistrosBody.addEventListener('click', e => {
+                const viewBtn = e.target.closest('.view-details-btn');
+                if (viewBtn) {
+                    currentState.view = 'form';
+                    currentState.recordId = viewBtn.dataset.id; // Agora é o ID do Firestore
+                    render();
+                }
+            });
+
+            // --- INICIALIZAÇÃO ---
+            // Não chama o render() aqui.
+            // O render() será chamado pelo onSnapshot após a autenticação.
+        });
+    </script>
+</body>
+</html>
