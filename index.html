@@ -184,6 +184,7 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                     </div>
                     <ul class="nav-sub-menu">
+                        <!-- ATUALIZADO: 06.01 ativado -->
                         <li><button class="nav-link" data-view="portaMadeira">06.01. Porta de madeira</button></li>
                         <li><button class="nav-link" data-view="janelas">06.02. Janelas</button></li>
                         <li><button class="nav-link" data-view="guardaCorpo">06.03. Guarda-Corpo</button></li>
@@ -296,6 +297,8 @@
                                     <input type="text" id="local-ensaio" class="border border-gray-300 rounded-md px-2 py-1 focus:ring-[#01455C] focus:border-[#01455C]" placeholder="Ex: Estaca E-15">
                                 </div>
                             </div>
+                            
+                            <!-- Seção de Checklist -->
                             <div class="overflow-x-auto mt-6">
                                 <table class="w-full text-left table-auto">
                                     <thead class="bg-gray-50 border-b">
@@ -309,9 +312,27 @@
                                     <tbody id="checklist-body"></tbody>
                                 </table>
                             </div>
+                            
+                            <!-- NOVA SEÇÃO: Anexo -->
+                            <div id="anexo-input-container" class="mt-6">
+                                <label for="anexo-ensaio" class="block font-semibold text-gray-600 mb-2">Anexar Arquivo (Foto, PDF, etc.):</label>
+                                <input type="file" id="anexo-ensaio" class="w-full text-sm text-gray-500
+                                    file:mr-4 file:py-2 file:px-4
+                                    file:rounded-lg file:border-0
+                                    file:text-sm file:font-semibold
+                                    file:bg-[#01455C] file:text-white
+                                    hover:file:bg-[#01374A] cursor-pointer"/>
+                            </div>
+
+                            <div id="anexo-view-container" class="mt-6 hidden">
+                                <label class="block font-semibold text-gray-600 mb-2">Anexo:</label>
+                                <a id="anexo-link" href="#" target="_blank" class="text-blue-600 hover:underline font-medium"></a>
+                            </div>
+                            
+                            <!-- Botões de Ação -->
                             <div class="mt-8 flex justify-end gap-4">
                                 <button id="voltar-btn" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-lg">Voltar</button>
-                                <button id="salvar-registro-btn" class="bg-[#9FC419] hover:bg-[#8CB015] text-white font-bold py-2 px-4 rounded-lg">Salvar Registro</button>
+                                <button id="salvar-registro-btn" class="bg-[#9FC419] hover:bg-[#8CB015] text-white font-bold py-2 px-4 rounded-lg disabled:opacity-50" disabled>Salvar Registro</button>
                             </div>
                         </div>
                     </div>
@@ -325,7 +346,8 @@
         // Importar funções dos SDKs
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, doc, getDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, onSnapshot, doc, getDoc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-storage.js";
 
         // Configuração do Firebase que você forneceu
         const firebaseConfig = {
@@ -342,8 +364,8 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const auth = getAuth(app);
+        const storage = getStorage(app); // Inicializar o Storage
 
-        // --- Restante do seu script ---
         document.addEventListener('DOMContentLoaded', () => {
             // --- ELEMENTOS DO DOM ---
             const navMainMenus = document.querySelectorAll('.nav-main-menu');
@@ -366,6 +388,12 @@
             const checklistBody = document.getElementById('checklist-body');
             const salvarRegistroBtn = document.getElementById('salvar-registro-btn');
             const voltarBtn = document.getElementById('voltar-btn');
+
+            // Novos elementos para Anexo
+            const anexoInputContainer = document.getElementById('anexo-input-container');
+            const anexoInput = document.getElementById('anexo-ensaio');
+            const anexoViewContainer = document.getElementById('anexo-view-container');
+            const anexoLink = document.getElementById('anexo-link');
             
             // --- ESTRUTURA DE DADOS E TEMPLATES ---
             const statusMap = {
@@ -374,7 +402,6 @@
                 nao_realizado: { text: 'Não Realizado', class: 'status-nao_realizado' },
             };
 
-            // Todos os seus templates de checklist
             const checklistTemplates = {
                 aterro: {
                     title: '01.01. Aterros',
@@ -530,11 +557,11 @@
                     info: {
                         atencao: [
                             { caracteristica: 'Resistência de aderência à tração', ponto: 'A aderência dos revestimentos acabados pode ser feita por ensaios de percussão, realizados através de impactos leves, não contundentes, com martelo de madeira ou outro instrumento rijo. A avaliação deve ser feita em cerca de 1 m2, a cada 100 m2 para paredes. A execução de ensaios de resistência de aderência à tração é feita em pontos escolhidos aleatoriamente, a cada 100 m2 ou menos da área em avaliação.'},
-                            { caracteristica: 'Ensaios (Potencial à tração, Módulo, Variação, etc.)', ponto: 'A NBR 16541 - Argamassa para assentamento e revestimento de paredes e tetos - Preparo da mistura para a realização de ensaios indica a utilização de 2,5 kg de argamassa no estado fresco para a realização dos ensaios.' }
+                            { caracteristica: 'Demais Ensaios', ponto: 'A NBR 16541 - Argamassa para assentamento e revestimento de paredes e tetos - Preparo da mistura para a realização de ensaios indica a utilização de 2,5 kg de argamassa no estado fresco para a realização dos ensaios.' }
                         ],
                         dicas: [
                             { caracteristica: 'Resistência de aderência à tração', dica: 'Os revestimentos que apresentarem som cavo nesta inspeção, por amostragem, devem ser integralmente percutidos para se estimar a área total com falha de aderência, a ser reparada.'},
-                            { caracteristica: 'Ensaios (Potencial à tração, Módulo, Variação, etc.)', dica: 'Estes são ensaios para determinação de propriedades físicas para classificação da argamassa.'}
+                            { caracteristica: 'Demais Ensaios', dica: 'Estes são ensaios para determinação de propriedades físicas para classificação da argamassa.'}
                         ]
                     }
                 },
@@ -793,6 +820,9 @@
             let database = {}; 
             let currentState = { view: 'dashboard', type: null };
             let authReady = false; 
+            let fileToUpload = null; // Armazena o arquivo para upload
+            let isEditing = false; // ATUALIZADO: Controle de edição
+            let editingDocId = null; // ATUALIZADO: ID do documento em edição
 
             const setupRealtimeListeners = () => {
                 Object.keys(checklistTemplates).forEach(type => {
@@ -805,9 +835,7 @@
                             id: doc.id, 
                             ...doc.data()
                         }));
-                        // ATENÇÃO: Só renderiza se o dashboard estiver ativo,
-                        // para não atrapalhar o usuário se ele estiver em outra tela
-                        if (currentState.view === 'dashboard') {
+                        if (currentState.view === 'dashboard' || currentState.view === type) {
                             render();
                         }
                     }, (error) => {
@@ -815,8 +843,6 @@
                     });
                 });
                 
-                // Força a primeira renderização após um pequeno atraso
-                // para garantir que o onSnapshot tenha tempo de popular
                 setTimeout(() => {
                     if (currentState.view === 'dashboard') {
                         render();
@@ -828,11 +854,13 @@
                 .then(() => {
                     console.log("Firebase: Usuário anônimo conectado.");
                     authReady = true;
+                    salvarRegistroBtn.disabled = false; // Habilita o botão de salvar
                     setupRealtimeListeners();
-                    render(); // Renderiza o estado inicial (Dashboard)
+                    render();
                 })
                 .catch((error) => {
                     console.error("Firebase: Erro na autenticação anônima", error);
+                    alert("Erro de autenticação. Verifique o console. Você ativou o login Anônimo no Firebase?");
                 });
             
             // --- FUNÇÕES DE LÓGICA ---
@@ -850,36 +878,28 @@
                 views.forEach(v => v.classList.add('hidden'));
                 navButtons.forEach(b => b.classList.remove('active'));
 
-                // Limpa todos os menus abertos antes de reabrir os corretos
                 document.querySelectorAll('.nav-main-menu.open').forEach(m => m.classList.remove('open'));
                 document.querySelectorAll('.nav-sub-menu.open').forEach(m => m.classList.remove('open'));
 
                 const activeNav = document.querySelector(`.nav-link[data-view="${currentState.view === 'form' ? currentState.type : currentState.view}"]`);
                 
-                // CORREÇÃO: Lógica para reabrir menus-pai
                 if (activeNav) {
                     activeNav.classList.add('active');
-                    
                     let current = activeNav;
                     while (current) {
                         const parentSubMenu = current.closest('.nav-sub-menu');
                         if (parentSubMenu) {
-                            // Este é o UL
                             parentSubMenu.classList.add('open');
-                            // Este é o DIV (.nav-main-menu) que o controla
                             const parentMenu = parentSubMenu.previousElementSibling;
                             if (parentMenu && parentMenu.classList.contains('nav-main-menu')) {
                                 parentMenu.classList.add('open');
                             }
-                            // Continua o loop a partir do <li> pai do sub-menu
                             current = parentSubMenu.parentElement; 
                         } else {
-                            // Não há mais sub-menus pai
                             current = null;
                         }
                     }
                 }
-                // FIM DA CORREÇÃO
 
                 switch (currentState.view) {
                     case 'dashboard':
@@ -990,6 +1010,10 @@
                             <button class="bg-gray-200 text-[#01455C] hover:bg-gray-300 font-medium py-1 px-3 rounded-md view-details-btn" data-id="${registro.id}">
                                 Visualizar
                             </button>
+                            <!-- ATUALIZADO: Botão Editar adicionado -->
+                            <button class="bg-yellow-100 text-yellow-700 hover:bg-yellow-200 font-medium py-1 px-3 rounded-md edit-btn" data-id="${registro.id}">
+                                Editar
+                            </button>
                             <button class="bg-red-100 text-red-700 hover:bg-red-200 font-medium py-1 px-3 rounded-md delete-btn" data-id="${registro.id}" data-type="${type}">
                                 Excluir
                             </button>
@@ -999,47 +1023,88 @@
                 });
             };
 
+            // ATUALIZADO: renderFormulario com lógica de edição
             const renderFormulario = (type, recordId = null) => {
                 const template = checklistTemplates[type];
                 let registro = null;
                 let isReadOnly = false;
+                
+                // Se não estiver editando, limpa o arquivo
+                if (!isEditing) {
+                    fileToUpload = null;
+                    anexoInput.value = null;
+                }
 
                 if (recordId) {
                     registro = (database[type] || []).find(r => r.id === recordId);
-                    isReadOnly = true;
+                    // Se tem ID e NÃO está editando, é apenas visualização
+                    if (!isEditing) {
+                        isReadOnly = true;
+                    }
                 }
 
-                formularioTitulo.textContent = template.title;
+                formularioTitulo.textContent = isEditing ? `Editar ${template.title}` : template.title;
                 localInput.value = registro ? registro.local : '';
                 localInput.disabled = isReadOnly;
-                salvarRegistroBtn.style.display = isReadOnly ? 'none' : 'block';
+                
+                if (isReadOnly) {
+                    anexoInputContainer.classList.add('hidden');
+                    if (registro && registro.anexoURL) {
+                        anexoLink.href = registro.anexoURL;
+                        anexoLink.textContent = registro.anexoNome || 'Ver Anexo';
+                        anexoViewContainer.classList.remove('hidden');
+                    } else {
+                        anexoViewContainer.classList.add('hidden');
+                    }
+                    salvarRegistroBtn.style.display = 'none';
+                } else {
+                    anexoInputContainer.classList.remove('hidden');
+                    // Mostra link do anexo atual se estiver editando
+                    if (isEditing && registro && registro.anexoURL) {
+                         anexoLink.href = registro.anexoURL;
+                         anexoLink.textContent = `Atual: ${registro.anexoNome || 'Ver Anexo'}`;
+                         anexoViewContainer.classList.remove('hidden');
+                    } else {
+                        anexoViewContainer.classList.add('hidden');
+                    }
+                    salvarRegistroBtn.style.display = 'block';
+                    salvarRegistroBtn.textContent = isEditing ? 'Atualizar Registro' : 'Salvar Registro';
+                }
 
-                const ensaiosParaRenderizar = registro ? registro.ensaios : template.ensaios.map(e => ({...e, status: 'nao_realizado', data: ''}));
+                // Se estiver editando ou visualizando, usa os ensaios do registro. Se for novo, usa o template vazio.
+                const ensaiosParaRenderizar = (registro && registro.ensaios) ? registro.ensaios : template.ensaios.map(e => ({...e, status: 'nao_realizado', data: ''}));
                 
                 checklistBody.innerHTML = '';
                 ensaiosParaRenderizar.forEach(ensaio => {
-                    const statusInfo = statusMap[ensaio.status];
+                    const statusInfo = statusMap[ensaio.status] || statusMap['nao_realizado'];
                     const dataFormatada = ensaio.data ? new Date(ensaio.data + 'T00:00:00').toLocaleDateString('pt-BR') : '---';
                     const tr = document.createElement('tr');
                     tr.className = 'border-b';
-                    tr.innerHTML = `
-                        <td class="px-4 py-3 font-medium text-gray-800">${ensaio.caracteristica}</td>
-                        <td class="px-4 py-3 text-gray-600">${ensaio.norma}</td>
-                        <td class="px-4 py-3">
-                            ${isReadOnly ? `<span class="status-badge ${statusInfo.class}">${statusInfo.text}</span>` : `
-                            <select data-ensaio-id="${ensaio.id}" class="status-select w-full p-1 border-gray-300 rounded-md focus:ring-[#01455C] focus:border-[#01455C]">
-                                <option value="nao_realizado" ${ensaio.status === 'nao_realizado' ? 'selected' : ''}>Não Realizado</option>
-                                <option value="conforme" ${ensaio.status === 'conforme' ? 'selected' : ''}>Conforme</option>
-                                <option value="nao_conforme" ${ensaio.status === 'nao_conforme' ? 'selected' : ''}>Não Conforme</option>
-                            </select>
-                            `}
-                        </td>
-                        <td class="px-4 py-3">
-                            ${isReadOnly ? dataFormatada : `
-                            <input type="date" data-ensaio-id="${ensaio.id}" value="${ensaio.data || ''}" class="data-input w-full p-1 border-gray-300 rounded-md focus:ring-[#01455C] focus:border-[#01455C]">
-                            `}
-                        </td>
-                    `;
+                    
+                    // Renderiza campos editáveis ou texto estático
+                    if (isReadOnly) {
+                         tr.innerHTML = `
+                            <td class="px-4 py-3 font-medium text-gray-800">${ensaio.caracteristica}</td>
+                            <td class="px-4 py-3 text-gray-600">${ensaio.norma}</td>
+                            <td class="px-4 py-3"><span class="status-badge ${statusInfo.class}">${statusInfo.text}</span></td>
+                            <td class="px-4 py-3">${dataFormatada}</td>
+                        `;
+                    } else {
+                        tr.innerHTML = `
+                            <td class="px-4 py-3 font-medium text-gray-800">${ensaio.caracteristica}</td>
+                            <td class="px-4 py-3 text-gray-600">${ensaio.norma}</td>
+                            <td class="px-4 py-3">
+                                <select data-ensaio-id="${ensaio.id}" class="status-select w-full p-1 border-gray-300 rounded-md focus:ring-[#01455C] focus:border-[#01455C]">
+                                    <option value="nao_realizado" ${ensaio.status === 'nao_realizado' ? 'selected' : ''}>Não Realizado</option>
+                                    <option value="conforme" ${ensaio.status === 'conforme' ? 'selected' : ''}>Conforme</option>
+                                    <option value="nao_conforme" ${ensaio.status === 'nao_conforme' ? 'selected' : ''}>Não Conforme</option>
+                                </select>
+                            </td>
+                            <td class="px-4 py-3">
+                                <input type="date" data-ensaio-id="${ensaio.id}" value="${ensaio.data || ''}" class="data-input w-full p-1 border-gray-300 rounded-md focus:ring-[#01455C] focus:border-[#01455C]">
+                            </td>
+                        `;
+                    }
                     checklistBody.appendChild(tr);
                 });
             };
@@ -1071,15 +1136,23 @@
             novoRegistroBtn.addEventListener('click', () => {
                 currentState.view = 'form';
                 currentState.recordId = null;
+                isEditing = false; // Reset modo edição
+                editingDocId = null;
                 render();
             });
 
             voltarBtn.addEventListener('click', () => {
                 currentState.view = currentState.type;
                 currentState.recordId = null;
+                isEditing = false; // Reset modo edição
                 render();
             });
 
+            anexoInput.addEventListener('change', (e) => {
+                fileToUpload = e.target.files[0] || null;
+            });
+
+            // ATUALIZADO: Salvar ou Atualizar
             salvarRegistroBtn.addEventListener('click', async () => {
                 const local = localInput.value.trim();
                 if (!local) {
@@ -1087,9 +1160,18 @@
                     return;
                 }
                 
+                salvarRegistroBtn.disabled = true;
+                salvarRegistroBtn.textContent = 'Salvando...';
+                
                 const tipoAtual = currentState.type;
-                const ensaiosTemplate = checklistTemplates[tipoAtual].ensaios;
-                const ensaiosDoRegistro = ensaiosTemplate.map(template => {
+                // Se estiver editando, pega os ensaios atuais do banco como base (para manter IDs), senão usa o template
+                let baseEnsaios = checklistTemplates[tipoAtual].ensaios;
+                if (isEditing && editingDocId) {
+                    const currentRecord = (database[tipoAtual] || []).find(r => r.id === editingDocId);
+                    if(currentRecord) baseEnsaios = currentRecord.ensaios;
+                }
+
+                const ensaiosDoRegistro = baseEnsaios.map(template => {
                     const statusSelect = checklistBody.querySelector(`.status-select[data-ensaio-id="${template.id}"]`);
                     const dataInput = checklistBody.querySelector(`.data-input[data-ensaio-id="${template.id}"]`);
                     return {
@@ -1099,32 +1181,70 @@
                     };
                 });
                 
-                const novoRegistro = {
+                const registroData = {
                     local: local,
                     kpi: calculateKPI(ensaiosDoRegistro),
                     ensaios: ensaiosDoRegistro
+                    // anexoURL e anexoNome são tratados separadamente abaixo
                 };
                 
                 try {
-                    const collectionRef = collection(db, tipoAtual);
-                    await addDoc(collectionRef, novoRegistro);
+                    let docRef;
+                    
+                    if (isEditing && editingDocId) {
+                        // ATUALIZAR
+                        docRef = doc(db, tipoAtual, editingDocId);
+                        await updateDoc(docRef, registroData);
+                    } else {
+                        // CRIAR NOVO
+                        const collectionRef = collection(db, tipoAtual);
+                        docRef = await addDoc(collectionRef, { ...registroData, anexoURL: null, anexoNome: null });
+                    }
+
+                    // Upload de arquivo (se houver novo arquivo)
+                    if (fileToUpload) {
+                        const filePath = `anexos/${tipoAtual}/${docRef.id}/${fileToUpload.name}`;
+                        const storageRef = ref(storage, filePath);
+                        const uploadResult = await uploadBytes(storageRef, fileToUpload);
+                        const downloadURL = await getDownloadURL(uploadResult.ref);
+                        
+                        await updateDoc(docRef, {
+                            anexoURL: downloadURL,
+                            anexoNome: fileToUpload.name
+                        });
+                    }
+
                     currentState.view = tipoAtual;
-                    // O onSnapshot do Firebase vai atualizar a lista de registros
-                    // mas precisamos navegar para a tela de lista manualmente.
+                    isEditing = false;
+                    editingDocId = null;
                     render();
                 } catch (e) {
-                    console.error("Firebase: Erro ao adicionar documento: ", e);
+                    console.error("Firebase: Erro ao salvar: ", e);
                     alert("Erro ao salvar o registro. Verifique o console.");
+                } finally {
+                    salvarRegistroBtn.disabled = false;
+                    salvarRegistroBtn.textContent = 'Salvar Registro';
                 }
             });
             
             tabelaRegistrosBody.addEventListener('click', async (e) => {
                 const viewBtn = e.target.closest('.view-details-btn');
+                const editBtn = e.target.closest('.edit-btn'); // ATUALIZADO
                 const deleteBtn = e.target.closest('.delete-btn');
 
                 if (viewBtn) {
                     currentState.view = 'form';
-                    currentState.recordId = viewBtn.dataset.id; // ID do Firestore
+                    currentState.recordId = viewBtn.dataset.id;
+                    isEditing = false; // Apenas visualizar
+                    render();
+                }
+
+                // ATUALIZADO: Lógica do botão Editar
+                if (editBtn) {
+                    currentState.view = 'form';
+                    currentState.recordId = editBtn.dataset.id;
+                    isEditing = true; // Modo de edição ativado
+                    editingDocId = editBtn.dataset.id;
                     render();
                 }
 
@@ -1135,13 +1255,17 @@
                     if (confirm("Tem certeza que deseja excluir este registro? Esta ação não pode ser desfeita.")) {
                         try {
                             const docRef = doc(db, type, id);
+                            const docSnap = await getDoc(docRef);
+                            
+                            if (docSnap.exists() && docSnap.data().anexoURL) {
+                                const anexoRef = ref(storage, docSnap.data().anexoURL);
+                                await deleteObject(anexoRef).catch(err => console.warn("Erro ao deletar anexo (pode não existir):", err));
+                            }
+                            
                             await deleteDoc(docRef);
-                            // O onSnapshot cuidará de atualizar a UI, não precisamos chamar o render()
-                            // Mas se estivermos na mesma view, forçamos a renderização
-                            render();
                             console.log("Registro excluído com sucesso!");
                         } catch (error) {
-                            console.error("Firebase: Erro ao excluir documento: ", error);
+                            console.error("Firebase: Erro ao excluir: ", error);
                             alert("Erro ao excluir o registro. Verifique o console.");
                         }
                     }
@@ -1149,7 +1273,6 @@
             });
 
             // --- INICIALIZAÇÃO ---
-            // A renderização é iniciada pelo onSnapshot após a autenticação
         });
     </script>
 </body>
