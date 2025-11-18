@@ -33,6 +33,18 @@
             transform: rotate(90deg);
         }
         
+        /* NOVOS ESTILOS PARA SUB-MENUS (NÍVEL 2 e 3) */
+        .nav-sub-menu .nav-main-menu { /* Um pai L2 dentro de um sub-menu L1 */
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.5rem 0.75rem; /* Menor padding */
+        }
+        .nav-sub-menu .nav-sub-menu { /* Um sub-menu L3 */
+            padding-left: 1.5rem; /* Mais indentado */
+            margin-left: 0.5rem;
+        }
+        /* FIM DOS NOVOS ESTILOS */
+
         .nav-sub-menu {
             display: none; /* Começa fechado */
             padding-left: 1rem;
@@ -101,18 +113,18 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                     </div>
                     <ul class="nav-sub-menu">
-                        <li><button class="nav-link" data-view="aterro">01.01. Aterros</button></li>
-                    </ul>
-                </li>
-                
-                <!-- 02. Fundações -->
-                <li>
-                    <div class="nav-main-menu">
-                        <span>02. Fundações</span>
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                    </div>
-                    <ul class="nav-sub-menu">
-                        <li><button class="nav-link" data-view="estacas">02.01. Estacas</button></li>
+                        <!-- 02.01. Estacas agora é um PARENT -->
+                        <li>
+                            <div class="nav-main-menu">
+                                <span>02.01. Estacas</span>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                            </div>
+                            <ul class="nav-sub-menu">
+                                <li><button class="nav-link" data-view="estacasConcreto">02.01.01. Concreto</button></li>
+                                <li><button class="nav-link" data-view="estacasAco">02.01.02. Aço</button></li>
+                                <li><button class="nav-link" data-view="estacasProvaCarga">02.01.03. Prova de Carga</button></li>
+                            </ul>
+                        </li>
                     </ul>
                 </li>
                 
@@ -375,32 +387,51 @@
                         ]
                     }
                 },
-                // ATUALIZADO: 02.01 ESTACAS
-                estacas: {
-                    title: '02.01. Estacas',
+                // ATUALIZADO: 02.01 ESTACAS foi quebrado em três
+                estacasConcreto: {
+                    title: '02.01.01. Concreto (Estacas)',
                     ensaios: [
-                        // Concreto
                         { id: 1, caracteristica: 'Abatimento ("slump")', norma: 'NBR 16889' },
-                        { id: 2, caracteristica: 'Resistência à compressão', norma: 'NBR 5739' },
-                        // Aço
-                        { id: 3, caracteristica: 'Propriedades mecânicas de tração', norma: 'NBR 6892-1' },
-                        { id: 4, caracteristica: 'Propriedades mecânicas de dobramento', norma: 'NBR 17005' },
-                        { id: 5, caracteristica: 'Coeficiente de conformação superficial', norma: 'NBR 7477' },
-                        { id: 6, caracteristica: 'Fadiga', norma: 'NBR 7478' },
-                        // Estacas
-                        { id: 7, caracteristica: 'Prova de carga estática', norma: 'NBR 16903' }
+                        { id: 2, caracteristica: 'Resistência à compressão', norma: 'NBR 5739' }
                     ],
                     info: {
                         atencao: [
                             { caracteristica: 'Abatimento ("slump")', ponto: 'Deve ser feito no recebimento do material em obra, a cada betonada recebida de empresa de concretagem.' },
-                            { caracteristica: 'Resistência à compressão', ponto: 'A amostragem e o controle estatístico deve ser realizado conforme a NBR 12655. Corpos de prova devem ser moldados conforme NBR 5738.' },
-                            { caracteristica: 'Aço (Tração, Dobramento, etc.)', ponto: 'As barras ou fios de cada fornecimento devem ser repartidos em lotes aproximadamente iguais e perfeitamente identificáveis, cujas massas máximas não excedam 30 t. Deve ser retirada uma amostra de cada lote, extraída aleatoriamente composta por 3 exemplares de comprimento de no mínimo 1,5 m.' },
-                            { caracteristica: 'Prova de carga estática', ponto: 'O número de provas de carga deve ser de 1% do número total de estacas da obra (arredondando para uma casa decimal, e em seguida arredondar o número obtido para o número inteiro mais próximo, com dígito 5 sempre arredondado para cima). Pelo menos uma prova de carga estática ou ensaios de carregamento dinâmico devem ser feitos nas estacas da edificação principal da obra.' }
+                            { caracteristica: 'Resistência à compressão', ponto: 'A amostragem e o controle estatístico deve ser realizado conforme a NBR 12655. Corpos de prova devem ser moldados conforme NBR 5738.' }
                         ],
                         dicas: [
                             { caracteristica: 'Abatimento ("slump")', dica: 'Se o resultado não for adequado, conforme da NBR 7212, não se admite adição de água. Caso o concreto apresente abatimento inferior à classe especificada, admite-se adição suplementar de aditivo para corrigir.' },
-                            { caracteristica: 'Resistência à compressão', dica: 'Como o valor de resistência é obtido 28 dias após o uso, deve ser feito um mapa de concretagem para rastrear onde cada lote foi aplicado. No caso de reprovação, o projetista deve ser comunicado.' },
-                            { caracteristica: 'Aço (Tração, Dobramento, etc.)', dica: 'Barras e fios de aço possuem certificação compulsória (Portaria INMETRO n° 73 de 17/03/2010), os materiais podem ser comercializados somente em conformidade com o INMETRO. O ensaio de fadiga é obrigatório somente quando solicitado pelo comprador.' },
+                            { caracteristica: 'Resistência à compressão', dica: 'Como o valor de resistência é obtido 28 dias após o uso, deve ser feito um mapa de concretagem para rastrear onde cada lote foi aplicado. No caso de reprovação, o projetista deve ser comunicado.' }
+                        ]
+                    }
+                },
+                estacasAco: {
+                    title: '02.01.02. Aço (Estacas)',
+                    ensaios: [
+                        { id: 3, caracteristica: 'Propriedades mecânicas de tração', norma: 'NBR 6892-1' },
+                        { id: 4, caracteristica: 'Propriedades mecânicas de dobramento', norma: 'NBR 17005' },
+                        { id: 5, caracteristica: 'Coeficiente de conformação superficial', norma: 'NBR 7477' },
+                        { id: 6, caracteristica: 'Fadiga', norma: 'NBR 7478' }
+                    ],
+                    info: {
+                        atencao: [
+                            { caracteristica: 'Aço (Geral)', ponto: 'As barras ou fios de cada fornecimento devem ser repartidos em lotes aproximadamente iguais e perfeitamente identificáveis, cujas massas máximas não excedam 30 t. Deve ser retirada uma amostra de cada lote, extraída aleatoriamente composta por 3 exemplares de comprimento de no mínimo 1,5 m.' }
+                        ],
+                        dicas: [
+                            { caracteristica: 'Aço (Geral)', dica: 'Barras e fios de aço possuem certificação compulsória (Portaria INMETRO n° 73 de 17/03/2010), os materiais podem ser comercializados somente em conformidade com o INMETRO. O ensaio de fadiga é obrigatório somente quando solicitado pelo comprador.' }
+                        ]
+                    }
+                },
+                estacasProvaCarga: {
+                    title: '02.01.03. Prova de Carga Estática',
+                    ensaios: [
+                        { id: 7, caracteristica: 'Prova de carga estática', norma: 'NBR 16903' }
+                    ],
+                    info: {
+                        atencao: [
+                            { caracteristica: 'Prova de carga estática', ponto: 'O número de provas de carga deve ser de 1% do número total de estacas da obra (arredondando para uma casa decimal, e em seguida arredondar o número obtido para o número inteiro mais próximo, com dígito 5 sempre arredondado para cima). Pelo menos uma prova de carga estática ou ensaios de carregamento dinâmico devem ser feitos nas estacas da edificação principal da obra.' }
+                        ],
+                        dicas: [
                             { caracteristica: 'Prova de carga estática', dica: 'Se esse valor da carga de ruptura não for obtido, a interpretação dos resultados deve ser feita pelo projetista. E se os resultados da prova de carga estática não forem satisfatórios, deve-se informar ao projetista e solicitar que ele estude a situação para indicar as ações necessárias.' }
                         ]
                     }
@@ -816,7 +847,10 @@
                         break;
                     case 'aterro':
                     case 'concreto':
-                    case 'estacas':
+                    // case 'estacas': // Removido
+                    case 'estacasConcreto': // Adicionado
+                    case 'estacasAco': // Adicionado
+                    case 'estacasProvaCarga': // Adicionado
                     case 'alvenaria':
                     case 'revestimento':
                     case 'alvenariaVedacao':
