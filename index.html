@@ -33,18 +33,6 @@
             transform: rotate(90deg);
         }
         
-        /* NOVOS ESTILOS PARA SUB-MENUS (NÍVEL 2 e 3) */
-        .nav-sub-menu .nav-main-menu { /* Um pai L2 dentro de um sub-menu L1 */
-            font-size: 0.75rem;
-            font-weight: 600;
-            padding: 0.5rem 0.75rem; /* Menor padding */
-        }
-        .nav-sub-menu .nav-sub-menu { /* Um sub-menu L3 */
-            padding-left: 1.5rem; /* Mais indentado */
-            margin-left: 0.5rem;
-        }
-        /* FIM DOS NOVOS ESTILOS */
-
         .nav-sub-menu {
             display: none; /* Começa fechado */
             padding-left: 1rem;
@@ -124,18 +112,7 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                     </div>
                     <ul class="nav-sub-menu">
-                        <!-- 02.01. Estacas agora é um PARENT -->
-                        <li>
-                            <div class="nav-main-menu">
-                                <span>02.01. Estacas</span>
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                            </div>
-                            <ul class="nav-sub-menu">
-                                <li><button class="nav-link" data-view="estacasConcreto">02.01.01. Concreto</button></li>
-                                <li><button class="nav-link" data-view="estacasAco">02.01.02. Aço</button></li>
-                                <li><button class="nav-link" data-view="estacasProvaCarga">02.01.03. Prova de Carga</button></li>
-                            </ul>
-                        </li>
+                        <li><button class="nav-link" data-view="estacas">02.01. Estacas</button></li>
                     </ul>
                 </li>
                 
@@ -160,7 +137,7 @@
                     <ul class="nav-sub-menu">
                         <li><button class="nav-link" data-view="alvenariaVedacao">04.01. Alvenaria de Vedação</button></li>
                         <li><button class="nav-link" data-view="revestimento">04.02. Revest. de Argamassa</button></li>
-                        <li><button class="nav-link" data-view="revestimentoCeramico">04.03. Revest. Cerâmico</button></li>
+                        <li><button class="nav-link nav-placeholder" disabled>04.03. Revest. Cerâmico</button></li>
                     </ul>
                 </li>
 
@@ -184,25 +161,14 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                     </div>
                     <ul class="nav-sub-menu">
-                        <!-- ATUALIZADO: 06.01 ativado -->
-                        <li><button class="nav-link" data-view="portaMadeira">06.01. Porta de madeira</button></li>
+                        <li><button class="nav-link nav-placeholder" disabled>06.01. Porta de madeira</button></li>
                         <li><button class="nav-link" data-view="janelas">06.02. Janelas</button></li>
                         <li><button class="nav-link" data-view="guardaCorpo">06.03. Guarda-Corpo</button></li>
                     </ul>
                 </li>
 
                 <!-- 07. Pintura -->
-                <li>
-                    <div class="nav-main-menu">
-                        <span>07. Pintura</span>
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                    </div>
-                    <ul class="nav-sub-menu">
-                        <li><button class="nav-link" data-view="pinturaLatexFosca">07.01. Tinta Látex Fosca</button></li>
-                        <li><button class="nav-link" data-view="pinturaLatexAcetinada">07.02. Tinta Látex Acetinada</button></li>
-                        <li><button class="nav-link" data-view="pinturaTexturaExterna">07.03. Textura Externa</button></li>
-                    </ul>
-                </li>
+                <li><div class="nav-main-menu nav-placeholder" title="Em breve"><span>07. Pintura</span></div></li>
                 
                 <!-- 08. Sistemas Prediais -->
                 <li>
@@ -297,8 +263,6 @@
                                     <input type="text" id="local-ensaio" class="border border-gray-300 rounded-md px-2 py-1 focus:ring-[#01455C] focus:border-[#01455C]" placeholder="Ex: Estaca E-15">
                                 </div>
                             </div>
-                            
-                            <!-- Seção de Checklist -->
                             <div class="overflow-x-auto mt-6">
                                 <table class="w-full text-left table-auto">
                                     <thead class="bg-gray-50 border-b">
@@ -312,27 +276,9 @@
                                     <tbody id="checklist-body"></tbody>
                                 </table>
                             </div>
-                            
-                            <!-- NOVA SEÇÃO: Anexo -->
-                            <div id="anexo-input-container" class="mt-6">
-                                <label for="anexo-ensaio" class="block font-semibold text-gray-600 mb-2">Anexar Arquivo (Foto, PDF, etc.):</label>
-                                <input type="file" id="anexo-ensaio" class="w-full text-sm text-gray-500
-                                    file:mr-4 file:py-2 file:px-4
-                                    file:rounded-lg file:border-0
-                                    file:text-sm file:font-semibold
-                                    file:bg-[#01455C] file:text-white
-                                    hover:file:bg-[#01374A] cursor-pointer"/>
-                            </div>
-
-                            <div id="anexo-view-container" class="mt-6 hidden">
-                                <label class="block font-semibold text-gray-600 mb-2">Anexo:</label>
-                                <a id="anexo-link" href="#" target="_blank" class="text-blue-600 hover:underline font-medium"></a>
-                            </div>
-                            
-                            <!-- Botões de Ação -->
                             <div class="mt-8 flex justify-end gap-4">
                                 <button id="voltar-btn" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-lg">Voltar</button>
-                                <button id="salvar-registro-btn" class="bg-[#9FC419] hover:bg-[#8CB015] text-white font-bold py-2 px-4 rounded-lg disabled:opacity-50" disabled>Salvar Registro</button>
+                                <button id="salvar-registro-btn" class="bg-[#9FC419] hover:bg-[#8CB015] text-white font-bold py-2 px-4 rounded-lg">Salvar Registro</button>
                             </div>
                         </div>
                     </div>
@@ -346,8 +292,8 @@
         // Importar funções dos SDKs
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, doc, getDoc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
-        import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-storage.js";
+        // IMPORTAR O deleteDoc
+        import { getFirestore, collection, addDoc, onSnapshot, doc, getDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
         // Configuração do Firebase que você forneceu
         const firebaseConfig = {
@@ -364,8 +310,8 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const auth = getAuth(app);
-        const storage = getStorage(app); // Inicializar o Storage
 
+        // --- Restante do seu script ---
         document.addEventListener('DOMContentLoaded', () => {
             // --- ELEMENTOS DO DOM ---
             const navMainMenus = document.querySelectorAll('.nav-main-menu');
@@ -388,12 +334,6 @@
             const checklistBody = document.getElementById('checklist-body');
             const salvarRegistroBtn = document.getElementById('salvar-registro-btn');
             const voltarBtn = document.getElementById('voltar-btn');
-
-            // Novos elementos para Anexo
-            const anexoInputContainer = document.getElementById('anexo-input-container');
-            const anexoInput = document.getElementById('anexo-ensaio');
-            const anexoViewContainer = document.getElementById('anexo-view-container');
-            const anexoLink = document.getElementById('anexo-link');
             
             // --- ESTRUTURA DE DADOS E TEMPLATES ---
             const statusMap = {
@@ -402,6 +342,7 @@
                 nao_realizado: { text: 'Não Realizado', class: 'status-nao_realizado' },
             };
 
+            // Todos os seus templates de checklist
             const checklistTemplates = {
                 aterro: {
                     title: '01.01. Aterros',
@@ -424,51 +365,19 @@
                         ]
                     }
                 },
-                estacasConcreto: {
-                    title: '02.01.01. Concreto (Estacas)',
+                estacas: {
+                    title: '02.01. Estacas',
                     ensaios: [
-                        { id: 1, caracteristica: 'Abatimento ("slump")', norma: 'NBR 16889' },
-                        { id: 2, caracteristica: 'Resistência à compressão', norma: 'NBR 5739' }
+                        { id: 1, caracteristica: 'Prova de carga estática', norma: 'NBR 16203' }
                     ],
                     info: {
                         atencao: [
-                            { caracteristica: 'Abatimento ("slump")', ponto: 'Deve ser feito no recebimento do material em obra, a cada betonada recebida de empresa de concretagem.' },
-                            { caracteristica: 'Resistência à compressão', ponto: 'A amostragem e o controle estatístico deve ser realizado conforme a NBR 12655. Corpos de prova devem ser moldados conforme NBR 5738.' }
+                            { caracteristica: 'Prova de carga estática', ponto: 'O número de provas de carga deve ser de 1% do número total de estacas da obra (arredondando para uma casa decimal, em seguida arredondar o número obtido para o número inteiro mais próximo, com dígito 5 sempre arredondado para cima).' },
+                            { caracteristica: 'Prova de carga estática', ponto: 'Pelo menos uma prova de carga estática ou ensaio de carregamento dinâmico devem ser feitos nas estacas da edificação principal da obra.' }
                         ],
                         dicas: [
-                            { caracteristica: 'Abatimento ("slump")', dica: 'Se o resultado não for adequado, conforme da NBR 7212, não se admite adição de água. Caso o concreto apresente abatimento inferior à classe especificada, admite-se adição suplementar de aditivo para corrigir.' },
-                            { caracteristica: 'Resistência à compressão', dica: 'Como o valor de resistência é obtido 28 dias após o uso, deve ser feito um mapa de concretagem para rastrear onde cada lote foi aplicado. No caso de reprovação, o projetista deve ser comunicado.' }
-                        ]
-                    }
-                },
-                estacasAco: {
-                    title: '02.01.02. Aço (Estacas)',
-                    ensaios: [
-                        { id: 3, caracteristica: 'Propriedades mecânicas de tração', norma: 'NBR 6892-1' },
-                        { id: 4, caracteristica: 'Propriedades mecânicas de dobramento', norma: 'NBR 17005' },
-                        { id: 5, caracteristica: 'Coeficiente de conformação superficial', norma: 'NBR 7477' },
-                        { id: 6, caracteristica: 'Fadiga', norma: 'NBR 7478' }
-                    ],
-                    info: {
-                        atencao: [
-                            { caracteristica: 'Aço (Geral)', ponto: 'As barras ou fios de cada fornecimento devem ser repartidos em lotes aproximadamente iguais e perfeitamente identificáveis, cujas massas máximas não excedam 30 t. Deve ser retirada uma amostra de cada lote, extraída aleatoriamente composta por 3 exemplares de comprimento de no mínimo 1,5 m.' }
-                        ],
-                        dicas: [
-                            { caracteristica: 'Aço (Geral)', dica: 'Barras e fios de aço possuem certificação compulsória (Portaria INMETRO n° 73 de 17/03/2010), os materiais podem ser comercializados somente em conformidade com o INMETRO. O ensaio de fadiga é obrigatório somente quando solicitado pelo comprador.' }
-                        ]
-                    }
-                },
-                estacasProvaCarga: {
-                    title: '02.01.03. Prova de Carga Estática',
-                    ensaios: [
-                        { id: 7, caracteristica: 'Prova de carga estática', norma: 'NBR 16903' }
-                    ],
-                    info: {
-                        atencao: [
-                            { caracteristica: 'Prova de carga estática', ponto: 'O número de provas de carga deve ser de 1% do número total de estacas da obra (arredondando para uma casa decimal, e em seguida arredondar o número obtido para o número inteiro mais próximo, com dígito 5 sempre arredondado para cima). Pelo menos uma prova de carga estática ou ensaios de carregamento dinâmico devem ser feitos nas estacas da edificação principal da obra.' }
-                        ],
-                        dicas: [
-                            { caracteristica: 'Prova de carga estática', dica: 'Se esse valor da carga de ruptura não for obtido, a interpretação dos resultados deve ser feita pelo projetista. E se os resultados da prova de carga estática não forem satisfatórios, deve-se informar ao projetista e solicitar que ele estude a situação para indicar as ações necessárias.' }
+                            { caracteristica: 'Prova de carga estática', dica: 'Se esse valor da carga de ruptura não for obtido, a interpretação dos resultados deve ser feita pelo projetista.'},
+                            { caracteristica: 'Prova de carga estática', dica: 'Se os resultados da prova de carga estática não forem satisfatórios, deve-se informar ao projetista e solicitar que ele estude a situação para indicar as ações necessárias.' }
                         ]
                     }
                 },
@@ -546,36 +455,23 @@
                 revestimento: {
                     title: '04.02. Revest. de Argamassa',
                     ensaios: [
-                        { id: 1, caracteristica: 'Resistência de aderência à tração', norma: 'NBR 13528-2 / NBR 15258' },
-                        { id: 2, caracteristica: 'Resistência potencial à tração superficial', norma: 'NBR 15258' },
-                        { id: 3, caracteristica: 'Módulo de elasticidade dinâmico', norma: 'NBR 15630' },
-                        { id: 4, caracteristica: 'Variação dimensional (retração ou expansão linear)', norma: 'NBR 15261' },
-                        { id: 5, caracteristica: 'Retenção de água', norma: 'NBR 13277' },
-                        { id: 6, caracteristica: 'Densidade de massa no estado fresco', norma: 'NBR 13278' },
-                        { id: 7, caracteristica: 'Teor de ar incorporado', norma: 'NBR 13278' }
+                        { id: 1, caracteristica: 'Resistência à compressão', norma: 'NBR 13279' },
+                        { id: 2, caracteristica: 'Retenção de água', norma: 'NBR 13278' },
+                        { id: 3, caracteristica: 'Teor de ar incorporado', norma: 'NBR 13277' },
+                        { id: 4, caracteristica: 'Densidade de massa', norma: 'NBR 13277' },
+                        { id: 5, caracteristica: 'Tempo em aberto', norma: 'NBR 14081-3' }
                     ],
                     info: {
                         atencao: [
-                            { caracteristica: 'Resistência de aderência à tração', ponto: 'A aderência dos revestimentos acabados pode ser feita por ensaios de percussão, realizados através de impactos leves, não contundentes, com martelo de madeira ou outro instrumento rijo. A avaliação deve ser feita em cerca de 1 m2, a cada 100 m2 para paredes. A execução de ensaios de resistência de aderência à tração é feita em pontos escolhidos aleatoriamente, a cada 100 m2 ou menos da área em avaliação.'},
-                            { caracteristica: 'Demais Ensaios', ponto: 'A NBR 16541 - Argamassa para assentamento e revestimento de paredes e tetos - Preparo da mistura para a realização de ensaios indica a utilização de 2,5 kg de argamassa no estado fresco para a realização dos ensaios.' }
+                            { caracteristica: 'Amostragem', ponto: 'Os ensaios de argamassa (industrializada ou dosada em obra) devem ser realizados em laboratório para aprovação, antes do início da aplicação.'},
+                            { caracteristica: 'Frequência', ponto: 'A cada 2.000 m² de revestimento aplicado, de um mesmo pavimento ou de uma mesma argamassa, deve ser coletada uma amostra.' },
+                            { caracteristica: 'Corpos de Prova', ponto: 'Deve ser moldado 1 corpo de prova (para ensaio de resistência à compressão) para cada 200 m² de revestimento ou para cada pavimento.' }
                         ],
                         dicas: [
-                            { caracteristica: 'Resistência de aderência à tração', dica: 'Os revestimentos que apresentarem som cavo nesta inspeção, por amostragem, devem ser integralmente percutidos para se estimar a área total com falha de aderência, a ser reparada.'},
-                            { caracteristica: 'Demais Ensaios', dica: 'Estes são ensaios para determinação de propriedades físicas para classificação da argamassa.'}
-                        ]
-                    }
-                },
-                revestimentoCeramico: {
-                    title: '04.03. Revest. Cerâmico de Parede',
-                    ensaios: [
-                        { id: 1, caracteristica: 'Resistência de aderência à tração', norma: 'NBR 13754 - Anexo A' }
-                    ],
-                    info: {
-                        atencao: [
-                            { caracteristica: 'Resistência de aderência à tração', ponto: 'Devem ser consideradas seis determinações da resistência de aderência, após a cura de 28 dias da argamassa colante utilizada.' }
-                        ],
-                        dicas: [
-                            { caracteristica: 'Resistência de aderência à tração', dica: 'O revestimento executado com resistência de aderência que não atende a NBR 13754 deve ser reexecutado ou reparado.'}
+                            { caracteristica: 'Rastreabilidade', dica: 'A rastreabilidade dos materiais deve ser garantida com o arquivamento das notas fiscais e certificados de qualidade.'},
+                            { caracteristica: 'Armazenamento', dica: 'O armazenamento dos sacos de argamassa deve ser em local seco, ventilado, sobre paletes e afastado no mínimo 30 cm das paredes.'},
+                            { caracteristica: 'Execução', dica: 'A argamassa deve ser misturada mecanicamente com a quantidade de água indicada pelo fabricante, até a obtenção de uma mistura homogênea.'},
+                            { caracteristica: 'Resultados', dica: 'Caso os resultados não sejam satisfatórios, deve-se comunicar o projetista de revestimentos e a empresa, para discutir as ações de remediação.'}
                         ]
                     }
                 },
@@ -624,36 +520,6 @@
                         ]
                     }
                 },
-                portaMadeira: {
-                    title: '06.01. Porta de madeira',
-                    ensaios: [
-                        { id: 1, caracteristica: 'Aspecto visual', norma: 'NBR 15930-2 Anexo B' },
-                        { id: 2, caracteristica: 'Variação dimensional (dimensões nominais)', norma: 'NBR 15930-2 Anexo D' },
-                        { id: 3, caracteristica: 'Variação dimensional (variações higroscópicas)', norma: 'NBR 15930-2 Anexo D' },
-                        { id: 4, caracteristica: 'Carregamento vertical (giro/pivotante)', norma: 'NBR 15930-2 Anexo F' },
-                        { id: 5, caracteristica: 'Torção estática (giro/pivotante)', norma: 'NBR 15930-2 Anexo F' },
-                        { id: 6, caracteristica: 'Impactos de corpo mole', norma: 'NBR 15930-2 Anexo G' },
-                        { id: 7, caracteristica: 'Impactos de corpo duro', norma: 'NBR 15930-2 Anexo G' },
-                        { id: 8, caracteristica: 'Resist. ao fechamento com obstrução', norma: 'NBR 15930-2 Anexo G' },
-                        { id: 9, caracteristica: 'Resist. ao fechamento brusco', norma: 'NBR 15930-2 Anexo G' },
-                        { id: 10, caracteristica: 'Resist. à flexão (porta de correr)', norma: 'NBR 10821-3' },
-                        { id: 11, caracteristica: 'Resist. ao esforço horizontal (porta de correr)', norma: 'NBR 10821-3' },
-                        { id: 12, caracteristica: 'Ciclos de abertura e fechamento', norma: 'NBR 15930-2 Anexo H' },
-                        { id: 13, caracteristica: 'Esforços de manuseio', norma: 'NBR 15930-2 Anexo H' },
-                        { id: 14, caracteristica: 'Resist. à ação do calor e umidade (portas RU)', norma: 'NBR 15930-2 Anexo I' },
-                        { id: 15, caracteristica: 'Resist. à ação da água (portas RU)', norma: 'NBR 15930-2 Anexo I' }
-                    ],
-                    info: {
-                        atencao: [
-                            { caracteristica: 'Aspecto visual', ponto: 'Deve-se inspecionar 100% do lote.' },
-                            { caracteristica: 'Ensaios de Desempenho (Dimensionais, Cargas, etc.)', ponto: 'A amostragem deve seguir a Tabela 32: 1 exemplar para lotes de até 500 unidades, e 3 exemplares para lotes de 501 até 35.000 unidades. A quantidade de corpos-de-prova para cada ensaio deve obedecer as Tabelas 33 e 34.' }
-                        ],
-                        dicas: [
-                            { caracteristica: 'Aspecto visual', dica: 'Os produtos não conformes devem ser rejeitados e substituídos pelo fornecedor.' },
-                            { caracteristica: 'Ensaios de Desempenho', dica: 'O controle de portas é bem rigoroso: todos os corpos-de-prova devem atender aos requisitos, caso contrário, o lote deve ser reprovado e o fornecedor deve providenciar nova entrega.' }
-                        ]
-                    }
-                },
                 janelas: {
                     title: '06.02. Janelas',
                     ensaios: [
@@ -688,56 +554,6 @@
                         ],
                         dicas: [
                             { caracteristica: 'Segurança', dica: 'O guarda-corpo não pode ser escalável (vãos e aberturas conforme NBR 9050) e deve ter altura mínima de 1,10 m.' }
-                        ]
-                    }
-                },
-                pinturaLatexFosca: {
-                    title: '07.01. Tinta Látex Fosca',
-                    ensaios: [
-                        { id: 1, caracteristica: 'Poder de cobertura de tinta seca / Rendimento', norma: 'NBR 14942' },
-                        { id: 2, caracteristica: 'Poder de cobertura de tinta úmida', norma: 'NBR 14943' },
-                        { id: 3, caracteristica: 'Resistência à abrasão úmida sem pasta', norma: 'NBR 15078' },
-                        { id: 4, caracteristica: 'Resistência à abrasão úmida com pasta', norma: 'NBR 14940' }
-                    ],
-                    info: {
-                        atencao: [
-                            { caracteristica: 'Geral', ponto: 'Tamanho da amostra e número de aceitação e rejeição devem ser conforme NBR 5426, no tamanho do lote de inspeção acordado com o fornecedor, usando amostragem dupla normal, NQA de 2,5% e nível de inspeção NI.' }
-                        ],
-                        dicas: [
-                            { caracteristica: 'Geral', dica: 'Se a amostra do lote for reprovada, todo o lote deve ser devolvido ao fornecedor.'}
-                        ]
-                    }
-                },
-                pinturaLatexAcetinada: {
-                    title: '07.02. Tinta Látex Acetinada',
-                    ensaios: [
-                        { id: 1, caracteristica: 'Poder de cobertura de tinta seca / Rendimento', norma: 'NBR 14942' },
-                        { id: 2, caracteristica: 'Poder de cobertura de tinta úmida', norma: 'NBR 14943' },
-                        { id: 3, caracteristica: 'Resistência à abrasão úmida com pasta', norma: 'NBR 14940' },
-                        { id: 4, caracteristica: 'Determinação de brilho', norma: 'NBR 15299' }
-                    ],
-                    info: {
-                        atencao: [
-                            { caracteristica: 'Geral', ponto: 'Tamanho da amostra e número de aceitação e rejeição devem ser conforme NBR 5426, no tamanho do lote de inspeção acordado com o fornecedor, usando amostragem dupla normal, NQA de 2,5% e nível de inspeção NI.' }
-                        ],
-                        dicas: [
-                            { caracteristica: 'Geral', dica: 'Se a amostra do lote for reprovada, todo o lote deve ser devolvido ao fornecedor.'}
-                        ]
-                    }
-                },
-                pinturaTexturaExterna: {
-                    title: '07.03. Textura Externa',
-                    ensaios: [
-                        { id: 1, caracteristica: 'Resistência de aderência à tração', norma: 'NBR 16912' },
-                        { id: 2, caracteristica: 'Resistência de aderência à tração pós envelhecimento', norma: 'NBR 16912' },
-                        { id: 3, caracteristica: 'Permeabilidade à água por coluna d\'água', norma: 'NBR 17012' }
-                    ],
-                    info: {
-                        atencao: [
-                            { caracteristica: 'Geral', ponto: 'Tamanho da amostra e número de aceitação e rejeição devem ser conforme NBR 5426, no tamanho do lote de inspeção acordado com o fornecedor, usando amostragem dupla normal, NQA de 2,5% e nível de inspeção NI.' }
-                        ],
-                        dicas: [
-                            { caracteristica: 'Geral', dica: 'Se a amostra do lote for reprovada, todo o lote deve ser devolvido ao fornecedor.'}
                         ]
                     }
                 },
@@ -820,9 +636,6 @@
             let database = {}; 
             let currentState = { view: 'dashboard', type: null };
             let authReady = false; 
-            let fileToUpload = null; // Armazena o arquivo para upload
-            let isEditing = false; // ATUALIZADO: Controle de edição
-            let editingDocId = null; // ATUALIZADO: ID do documento em edição
 
             const setupRealtimeListeners = () => {
                 Object.keys(checklistTemplates).forEach(type => {
@@ -835,32 +648,21 @@
                             id: doc.id, 
                             ...doc.data()
                         }));
-                        if (currentState.view === 'dashboard' || currentState.view === type) {
-                            render();
-                        }
+                        render();
                     }, (error) => {
                         console.error(`Firebase: Erro ao ouvir a coleção '${type}': `, error);
                     });
                 });
-                
-                setTimeout(() => {
-                    if (currentState.view === 'dashboard') {
-                        render();
-                    }
-                }, 1000); 
             };
 
             signInAnonymously(auth)
                 .then(() => {
                     console.log("Firebase: Usuário anônimo conectado.");
                     authReady = true;
-                    salvarRegistroBtn.disabled = false; // Habilita o botão de salvar
                     setupRealtimeListeners();
-                    render();
                 })
                 .catch((error) => {
                     console.error("Firebase: Erro na autenticação anônima", error);
-                    alert("Erro de autenticação. Verifique o console. Você ativou o login Anônimo no Firebase?");
                 });
             
             // --- FUNÇÕES DE LÓGICA ---
@@ -878,26 +680,14 @@
                 views.forEach(v => v.classList.add('hidden'));
                 navButtons.forEach(b => b.classList.remove('active'));
 
-                document.querySelectorAll('.nav-main-menu.open').forEach(m => m.classList.remove('open'));
-                document.querySelectorAll('.nav-sub-menu.open').forEach(m => m.classList.remove('open'));
-
                 const activeNav = document.querySelector(`.nav-link[data-view="${currentState.view === 'form' ? currentState.type : currentState.view}"]`);
                 
                 if (activeNav) {
                     activeNav.classList.add('active');
-                    let current = activeNav;
-                    while (current) {
-                        const parentSubMenu = current.closest('.nav-sub-menu');
-                        if (parentSubMenu) {
-                            parentSubMenu.classList.add('open');
-                            const parentMenu = parentSubMenu.previousElementSibling;
-                            if (parentMenu && parentMenu.classList.contains('nav-main-menu')) {
-                                parentMenu.classList.add('open');
-                            }
-                            current = parentSubMenu.parentElement; 
-                        } else {
-                            current = null;
-                        }
+                    const parentSubMenu = activeNav.closest('.nav-sub-menu');
+                    if (parentSubMenu) {
+                        parentSubMenu.classList.add('open');
+                        parentSubMenu.previousElementSibling.classList.add('open');
                     }
                 }
 
@@ -908,26 +698,19 @@
                         break;
                     case 'aterro':
                     case 'concreto':
-                    case 'estacasConcreto':
-                    case 'estacasAco':
-                    case 'estacasProvaCarga':
+                    case 'estacas':
                     case 'alvenaria':
                     case 'revestimento':
                     case 'alvenariaVedacao':
-                    case 'revestimentoCeramico':
                     case 'pisoCeramico':
                     case 'impermeabilizacao':
                     case 'forroGesso':
-                    case 'portaMadeira':
                     case 'janelas':
                     case 'guardaCorpo':
                     case 'agua':
                     case 'esgoto':
                     case 'gas':
                     case 'eletrica':
-                    case 'pinturaLatexFosca':
-                    case 'pinturaLatexAcetinada':
-                    case 'pinturaTexturaExterna':
                         listaRegistrosView.classList.remove('hidden');
                         renderListaRegistros(currentState.view);
                         break;
@@ -946,21 +729,19 @@
                 }
                 
                 Object.keys(checklistTemplates).forEach(type => {
-                    if (database[type]) {
-                        const registros = database[type]; 
-                        const totalKPI = registros.reduce((acc, reg) => acc + reg.kpi, 0);
-                        const mediaKPI = registros.length > 0 ? Math.round(totalKPI / registros.length) : 0;
-                        const kpiColor = mediaKPI >= 95 ? 'text-[#9FC419]' : (mediaKPI >= 70 ? 'text-yellow-500' : 'text-red-500');
+                    const registros = database[type] || []; 
+                    const totalKPI = registros.reduce((acc, reg) => acc + reg.kpi, 0);
+                    const mediaKPI = registros.length > 0 ? Math.round(totalKPI / registros.length) : 0;
+                    const kpiColor = mediaKPI >= 95 ? 'text-[#9FC419]' : (mediaKPI >= 70 ? 'text-yellow-500' : 'text-red-500');
 
-                        const tr = document.createElement('tr');
-                        tr.className = 'border-b hover:bg-gray-50';
-                        tr.innerHTML = `
-                            <td class="px-6 py-4 font-medium text-gray-800">${checklistTemplates[type].title}</td>
-                            <td class="px-6 py-4 text-gray-600 text-center">${registros.length}</td>
-                            <td class="px-6 py-4 font-bold text-center text-xl ${kpiColor}">${mediaKPI}%</td>
-                        `;
-                        dashboardTableBody.appendChild(tr);
-                    }
+                    const tr = document.createElement('tr');
+                    tr.className = 'border-b hover:bg-gray-50';
+                    tr.innerHTML = `
+                        <td class="px-6 py-4 font-medium text-gray-800">${checklistTemplates[type].title}</td>
+                        <td class="px-6 py-4 text-gray-600 text-center">${registros.length}</td>
+                        <td class="px-6 py-4 font-bold text-center text-xl ${kpiColor}">${mediaKPI}%</td>
+                    `;
+                    dashboardTableBody.appendChild(tr);
                 });
             };
 
@@ -972,7 +753,6 @@
 
                 if (infoData) {
                     infoSectionContainer.style.display = 'block';
-                    
                     let atencaoHtml = `<div class="bg-white rounded-lg p-4 border"><h3 class="text-lg font-bold text-yellow-600 mb-3">PONTOS DE ATENÇÃO DA QUALIDADE</h3><table class="w-full text-left table-auto"><tbody>`;
                     infoData.atencao.forEach(item => {
                         atencaoHtml += `<tr class="border-b"><td class="py-2 pr-4 font-semibold text-gray-700 align-top w-1/3">${item.caracteristica}</td><td class="py-2 text-gray-600">${item.ponto}</td></tr>`;
@@ -984,7 +764,6 @@
                         dicasHtml += `<tr class="border-b"><td class="py-2 pr-4 font-semibold text-gray-700 align-top w-1/3">${item.caracteristica}</td><td class="py-2 text-gray-600">${item.dica}</td></tr>`;
                     });
                     dicasHtml += `</tbody></table></div>`;
-
                     infoSectionContent.innerHTML = atencaoHtml + dicasHtml;
                 } else {
                     infoSectionContainer.style.display = 'none';
@@ -1010,10 +789,6 @@
                             <button class="bg-gray-200 text-[#01455C] hover:bg-gray-300 font-medium py-1 px-3 rounded-md view-details-btn" data-id="${registro.id}">
                                 Visualizar
                             </button>
-                            <!-- ATUALIZADO: Botão Editar adicionado -->
-                            <button class="bg-yellow-100 text-yellow-700 hover:bg-yellow-200 font-medium py-1 px-3 rounded-md edit-btn" data-id="${registro.id}">
-                                Editar
-                            </button>
                             <button class="bg-red-100 text-red-700 hover:bg-red-200 font-medium py-1 px-3 rounded-md delete-btn" data-id="${registro.id}" data-type="${type}">
                                 Excluir
                             </button>
@@ -1023,88 +798,47 @@
                 });
             };
 
-            // ATUALIZADO: renderFormulario com lógica de edição
             const renderFormulario = (type, recordId = null) => {
                 const template = checklistTemplates[type];
                 let registro = null;
                 let isReadOnly = false;
-                
-                // Se não estiver editando, limpa o arquivo
-                if (!isEditing) {
-                    fileToUpload = null;
-                    anexoInput.value = null;
-                }
 
                 if (recordId) {
                     registro = (database[type] || []).find(r => r.id === recordId);
-                    // Se tem ID e NÃO está editando, é apenas visualização
-                    if (!isEditing) {
-                        isReadOnly = true;
-                    }
+                    isReadOnly = true;
                 }
 
-                formularioTitulo.textContent = isEditing ? `Editar ${template.title}` : template.title;
+                formularioTitulo.textContent = template.title;
                 localInput.value = registro ? registro.local : '';
                 localInput.disabled = isReadOnly;
-                
-                if (isReadOnly) {
-                    anexoInputContainer.classList.add('hidden');
-                    if (registro && registro.anexoURL) {
-                        anexoLink.href = registro.anexoURL;
-                        anexoLink.textContent = registro.anexoNome || 'Ver Anexo';
-                        anexoViewContainer.classList.remove('hidden');
-                    } else {
-                        anexoViewContainer.classList.add('hidden');
-                    }
-                    salvarRegistroBtn.style.display = 'none';
-                } else {
-                    anexoInputContainer.classList.remove('hidden');
-                    // Mostra link do anexo atual se estiver editando
-                    if (isEditing && registro && registro.anexoURL) {
-                         anexoLink.href = registro.anexoURL;
-                         anexoLink.textContent = `Atual: ${registro.anexoNome || 'Ver Anexo'}`;
-                         anexoViewContainer.classList.remove('hidden');
-                    } else {
-                        anexoViewContainer.classList.add('hidden');
-                    }
-                    salvarRegistroBtn.style.display = 'block';
-                    salvarRegistroBtn.textContent = isEditing ? 'Atualizar Registro' : 'Salvar Registro';
-                }
+                salvarRegistroBtn.style.display = isReadOnly ? 'none' : 'block';
 
-                // Se estiver editando ou visualizando, usa os ensaios do registro. Se for novo, usa o template vazio.
-                const ensaiosParaRenderizar = (registro && registro.ensaios) ? registro.ensaios : template.ensaios.map(e => ({...e, status: 'nao_realizado', data: ''}));
+                const ensaiosParaRenderizar = registro ? registro.ensaios : template.ensaios.map(e => ({...e, status: 'nao_realizado', data: ''}));
                 
                 checklistBody.innerHTML = '';
                 ensaiosParaRenderizar.forEach(ensaio => {
-                    const statusInfo = statusMap[ensaio.status] || statusMap['nao_realizado'];
+                    const statusInfo = statusMap[ensaio.status];
                     const dataFormatada = ensaio.data ? new Date(ensaio.data + 'T00:00:00').toLocaleDateString('pt-BR') : '---';
                     const tr = document.createElement('tr');
                     tr.className = 'border-b';
-                    
-                    // Renderiza campos editáveis ou texto estático
-                    if (isReadOnly) {
-                         tr.innerHTML = `
-                            <td class="px-4 py-3 font-medium text-gray-800">${ensaio.caracteristica}</td>
-                            <td class="px-4 py-3 text-gray-600">${ensaio.norma}</td>
-                            <td class="px-4 py-3"><span class="status-badge ${statusInfo.class}">${statusInfo.text}</span></td>
-                            <td class="px-4 py-3">${dataFormatada}</td>
-                        `;
-                    } else {
-                        tr.innerHTML = `
-                            <td class="px-4 py-3 font-medium text-gray-800">${ensaio.caracteristica}</td>
-                            <td class="px-4 py-3 text-gray-600">${ensaio.norma}</td>
-                            <td class="px-4 py-3">
-                                <select data-ensaio-id="${ensaio.id}" class="status-select w-full p-1 border-gray-300 rounded-md focus:ring-[#01455C] focus:border-[#01455C]">
-                                    <option value="nao_realizado" ${ensaio.status === 'nao_realizado' ? 'selected' : ''}>Não Realizado</option>
-                                    <option value="conforme" ${ensaio.status === 'conforme' ? 'selected' : ''}>Conforme</option>
-                                    <option value="nao_conforme" ${ensaio.status === 'nao_conforme' ? 'selected' : ''}>Não Conforme</option>
-                                </select>
-                            </td>
-                            <td class="px-4 py-3">
-                                <input type="date" data-ensaio-id="${ensaio.id}" value="${ensaio.data || ''}" class="data-input w-full p-1 border-gray-300 rounded-md focus:ring-[#01455C] focus:border-[#01455C]">
-                            </td>
-                        `;
-                    }
+                    tr.innerHTML = `
+                        <td class="px-4 py-3 font-medium text-gray-800">${ensaio.caracteristica}</td>
+                        <td class="px-4 py-3 text-gray-600">${ensaio.norma}</td>
+                        <td class="px-4 py-3">
+                            ${isReadOnly ? `<span class="status-badge ${statusInfo.class}">${statusInfo.text}</span>` : `
+                            <select data-ensaio-id="${ensaio.id}" class="status-select w-full p-1 border-gray-300 rounded-md focus:ring-[#01455C] focus:border-[#01455C]">
+                                <option value="nao_realizado" ${ensaio.status === 'nao_realizado' ? 'selected' : ''}>Não Realizado</option>
+                                <option value="conforme" ${ensaio.status === 'conforme' ? 'selected' : ''}>Conforme</option>
+                                <option value="nao_conforme" ${ensaio.status === 'nao_conforme' ? 'selected' : ''}>Não Conforme</option>
+                            </select>
+                            `}
+                        </td>
+                        <td class="px-4 py-3">
+                            ${isReadOnly ? dataFormatada : `
+                            <input type="date" data-ensaio-id="${ensaio.id}" value="${ensaio.data || ''}" class="data-input w-full p-1 border-gray-300 rounded-md focus:ring-[#01455C] focus:border-[#01455C]">
+                            `}
+                        </td>
+                    `;
                     checklistBody.appendChild(tr);
                 });
             };
@@ -1136,23 +870,15 @@
             novoRegistroBtn.addEventListener('click', () => {
                 currentState.view = 'form';
                 currentState.recordId = null;
-                isEditing = false; // Reset modo edição
-                editingDocId = null;
                 render();
             });
 
             voltarBtn.addEventListener('click', () => {
                 currentState.view = currentState.type;
                 currentState.recordId = null;
-                isEditing = false; // Reset modo edição
                 render();
             });
 
-            anexoInput.addEventListener('change', (e) => {
-                fileToUpload = e.target.files[0] || null;
-            });
-
-            // ATUALIZADO: Salvar ou Atualizar
             salvarRegistroBtn.addEventListener('click', async () => {
                 const local = localInput.value.trim();
                 if (!local) {
@@ -1160,18 +886,9 @@
                     return;
                 }
                 
-                salvarRegistroBtn.disabled = true;
-                salvarRegistroBtn.textContent = 'Salvando...';
-                
                 const tipoAtual = currentState.type;
-                // Se estiver editando, pega os ensaios atuais do banco como base (para manter IDs), senão usa o template
-                let baseEnsaios = checklistTemplates[tipoAtual].ensaios;
-                if (isEditing && editingDocId) {
-                    const currentRecord = (database[tipoAtual] || []).find(r => r.id === editingDocId);
-                    if(currentRecord) baseEnsaios = currentRecord.ensaios;
-                }
-
-                const ensaiosDoRegistro = baseEnsaios.map(template => {
+                const ensaiosTemplate = checklistTemplates[tipoAtual].ensaios;
+                const ensaiosDoRegistro = ensaiosTemplate.map(template => {
                     const statusSelect = checklistBody.querySelector(`.status-select[data-ensaio-id="${template.id}"]`);
                     const dataInput = checklistBody.querySelector(`.data-input[data-ensaio-id="${template.id}"]`);
                     return {
@@ -1181,70 +898,31 @@
                     };
                 });
                 
-                const registroData = {
+                const novoRegistro = {
                     local: local,
                     kpi: calculateKPI(ensaiosDoRegistro),
                     ensaios: ensaiosDoRegistro
-                    // anexoURL e anexoNome são tratados separadamente abaixo
                 };
                 
                 try {
-                    let docRef;
-                    
-                    if (isEditing && editingDocId) {
-                        // ATUALIZAR
-                        docRef = doc(db, tipoAtual, editingDocId);
-                        await updateDoc(docRef, registroData);
-                    } else {
-                        // CRIAR NOVO
-                        const collectionRef = collection(db, tipoAtual);
-                        docRef = await addDoc(collectionRef, { ...registroData, anexoURL: null, anexoNome: null });
-                    }
-
-                    // Upload de arquivo (se houver novo arquivo)
-                    if (fileToUpload) {
-                        const filePath = `anexos/${tipoAtual}/${docRef.id}/${fileToUpload.name}`;
-                        const storageRef = ref(storage, filePath);
-                        const uploadResult = await uploadBytes(storageRef, fileToUpload);
-                        const downloadURL = await getDownloadURL(uploadResult.ref);
-                        
-                        await updateDoc(docRef, {
-                            anexoURL: downloadURL,
-                            anexoNome: fileToUpload.name
-                        });
-                    }
-
+                    const collectionRef = collection(db, tipoAtual);
+                    await addDoc(collectionRef, novoRegistro);
                     currentState.view = tipoAtual;
-                    isEditing = false;
-                    editingDocId = null;
                     render();
                 } catch (e) {
-                    console.error("Firebase: Erro ao salvar: ", e);
+                    console.error("Firebase: Erro ao adicionar documento: ", e);
                     alert("Erro ao salvar o registro. Verifique o console.");
-                } finally {
-                    salvarRegistroBtn.disabled = false;
-                    salvarRegistroBtn.textContent = 'Salvar Registro';
                 }
             });
             
+            // ATUALIZADO: Adiciona listener para botões de Excluir
             tabelaRegistrosBody.addEventListener('click', async (e) => {
                 const viewBtn = e.target.closest('.view-details-btn');
-                const editBtn = e.target.closest('.edit-btn'); // ATUALIZADO
                 const deleteBtn = e.target.closest('.delete-btn');
 
                 if (viewBtn) {
                     currentState.view = 'form';
-                    currentState.recordId = viewBtn.dataset.id;
-                    isEditing = false; // Apenas visualizar
-                    render();
-                }
-
-                // ATUALIZADO: Lógica do botão Editar
-                if (editBtn) {
-                    currentState.view = 'form';
-                    currentState.recordId = editBtn.dataset.id;
-                    isEditing = true; // Modo de edição ativado
-                    editingDocId = editBtn.dataset.id;
+                    currentState.recordId = viewBtn.dataset.id; // ID do Firestore
                     render();
                 }
 
@@ -1255,17 +933,11 @@
                     if (confirm("Tem certeza que deseja excluir este registro? Esta ação não pode ser desfeita.")) {
                         try {
                             const docRef = doc(db, type, id);
-                            const docSnap = await getDoc(docRef);
-                            
-                            if (docSnap.exists() && docSnap.data().anexoURL) {
-                                const anexoRef = ref(storage, docSnap.data().anexoURL);
-                                await deleteObject(anexoRef).catch(err => console.warn("Erro ao deletar anexo (pode não existir):", err));
-                            }
-                            
                             await deleteDoc(docRef);
+                            // O onSnapshot cuidará de atualizar a UI, não precisamos chamar o render()
                             console.log("Registro excluído com sucesso!");
                         } catch (error) {
-                            console.error("Firebase: Erro ao excluir: ", error);
+                            console.error("Firebase: Erro ao excluir documento: ", error);
                             alert("Erro ao excluir o registro. Verifique o console.");
                         }
                     }
@@ -1273,7 +945,9 @@
             });
 
             // --- INICIALIZAÇÃO ---
+            // A renderização é iniciada pelo onSnapshot após a autenticação
         });
     </script>
 </body>
+
 </html>
