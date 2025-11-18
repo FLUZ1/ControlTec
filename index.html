@@ -113,6 +113,17 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                     </div>
                     <ul class="nav-sub-menu">
+                        <li><button class="nav-link" data-view="aterro">01.01. Aterros</button></li>
+                    </ul>
+                </li>
+                
+                <!-- 02. Fundações -->
+                <li>
+                    <div class="nav-main-menu">
+                        <span>02. Fundações</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </div>
+                    <ul class="nav-sub-menu">
                         <!-- 02.01. Estacas agora é um PARENT -->
                         <li>
                             <div class="nav-main-menu">
@@ -173,7 +184,6 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                     </div>
                     <ul class="nav-sub-menu">
-                        <!-- ATUALIZADO: 06.01 ativado -->
                         <li><button class="nav-link" data-view="portaMadeira">06.01. Porta de madeira</button></li>
                         <li><button class="nav-link" data-view="janelas">06.02. Janelas</button></li>
                         <li><button class="nav-link" data-view="guardaCorpo">06.03. Guarda-Corpo</button></li>
@@ -387,7 +397,6 @@
                         ]
                     }
                 },
-                // ATUALIZADO: 02.01 ESTACAS foi quebrado em três
                 estacasConcreto: {
                     title: '02.01.01. Concreto (Estacas)',
                     ensaios: [
@@ -588,7 +597,6 @@
                         ]
                     }
                 },
-                // ATUALIZADO: 06.01 PORTA DE MADEIRA
                 portaMadeira: {
                     title: '06.01. Porta de madeira',
                     ensaios: [
@@ -797,11 +805,23 @@
                             id: doc.id, 
                             ...doc.data()
                         }));
-                        render();
+                        // ATENÇÃO: Só renderiza se o dashboard estiver ativo,
+                        // para não atrapalhar o usuário se ele estiver em outra tela
+                        if (currentState.view === 'dashboard') {
+                            render();
+                        }
                     }, (error) => {
                         console.error(`Firebase: Erro ao ouvir a coleção '${type}': `, error);
                     });
                 });
+                
+                // Força a primeira renderização após um pequeno atraso
+                // para garantir que o onSnapshot tenha tempo de popular
+                setTimeout(() => {
+                    if (currentState.view === 'dashboard') {
+                        render();
+                    }
+                }, 1000); 
             };
 
             signInAnonymously(auth)
@@ -809,6 +829,7 @@
                     console.log("Firebase: Usuário anônimo conectado.");
                     authReady = true;
                     setupRealtimeListeners();
+                    render(); // Renderiza o estado inicial (Dashboard)
                 })
                 .catch((error) => {
                     console.error("Firebase: Erro na autenticação anônima", error);
@@ -829,16 +850,36 @@
                 views.forEach(v => v.classList.add('hidden'));
                 navButtons.forEach(b => b.classList.remove('active'));
 
+                // Limpa todos os menus abertos antes de reabrir os corretos
+                document.querySelectorAll('.nav-main-menu.open').forEach(m => m.classList.remove('open'));
+                document.querySelectorAll('.nav-sub-menu.open').forEach(m => m.classList.remove('open'));
+
                 const activeNav = document.querySelector(`.nav-link[data-view="${currentState.view === 'form' ? currentState.type : currentState.view}"]`);
                 
+                // CORREÇÃO: Lógica para reabrir menus-pai
                 if (activeNav) {
                     activeNav.classList.add('active');
-                    const parentSubMenu = activeNav.closest('.nav-sub-menu');
-                    if (parentSubMenu) {
-                        parentSubMenu.classList.add('open');
-                        parentSubMenu.previousElementSibling.classList.add('open');
+                    
+                    let current = activeNav;
+                    while (current) {
+                        const parentSubMenu = current.closest('.nav-sub-menu');
+                        if (parentSubMenu) {
+                            // Este é o UL
+                            parentSubMenu.classList.add('open');
+                            // Este é o DIV (.nav-main-menu) que o controla
+                            const parentMenu = parentSubMenu.previousElementSibling;
+                            if (parentMenu && parentMenu.classList.contains('nav-main-menu')) {
+                                parentMenu.classList.add('open');
+                            }
+                            // Continua o loop a partir do <li> pai do sub-menu
+                            current = parentSubMenu.parentElement; 
+                        } else {
+                            // Não há mais sub-menus pai
+                            current = null;
+                        }
                     }
                 }
+                // FIM DA CORREÇÃO
 
                 switch (currentState.view) {
                     case 'dashboard':
@@ -847,10 +888,9 @@
                         break;
                     case 'aterro':
                     case 'concreto':
-                    // case 'estacas': // Removido
-                    case 'estacasConcreto': // Adicionado
-                    case 'estacasAco': // Adicionado
-                    case 'estacasProvaCarga': // Adicionado
+                    case 'estacasConcreto':
+                    case 'estacasAco':
+                    case 'estacasProvaCarga':
                     case 'alvenaria':
                     case 'revestimento':
                     case 'alvenariaVedacao':
@@ -858,7 +898,6 @@
                     case 'pisoCeramico':
                     case 'impermeabilizacao':
                     case 'forroGesso':
-                    // ATUALIZADO: 06.01 ativado
                     case 'portaMadeira':
                     case 'janelas':
                     case 'guardaCorpo':
@@ -887,7 +926,6 @@
                 }
                 
                 Object.keys(checklistTemplates).forEach(type => {
-                    // Garante que só vamos tentar renderizar o que existe no `database` (que é baseado no Firestore)
                     if (database[type]) {
                         const registros = database[type]; 
                         const totalKPI = registros.reduce((acc, reg) => acc + reg.kpi, 0);
@@ -906,7 +944,6 @@
                 });
             };
 
-            // ATUALIZADO: Lógica de renderização de info simplificada
             const renderInfoSection = (type) => {
                 const infoData = checklistTemplates[type].info;
                 infoSectionContent.innerHTML = '';
@@ -916,14 +953,12 @@
                 if (infoData) {
                     infoSectionContainer.style.display = 'block';
                     
-                    // Renderiza Pontos de Atenção
                     let atencaoHtml = `<div class="bg-white rounded-lg p-4 border"><h3 class="text-lg font-bold text-yellow-600 mb-3">PONTOS DE ATENÇÃO DA QUALIDADE</h3><table class="w-full text-left table-auto"><tbody>`;
                     infoData.atencao.forEach(item => {
                         atencaoHtml += `<tr class="border-b"><td class="py-2 pr-4 font-semibold text-gray-700 align-top w-1/3">${item.caracteristica}</td><td class="py-2 text-gray-600">${item.ponto}</td></tr>`;
                     });
                     atencaoHtml += `</tbody></table></div>`;
 
-                    // Renderiza Dicas de Qualidade
                     let dicasHtml = `<div class="bg-white rounded-lg p-4 border mt-4"><h3 class="text-lg font-bold text-green-600 mb-3">DICAS DE QUALIDADE</h3><table class="w-full text-left table-auto"><tbody>`;
                     infoData.dicas.forEach(item => {
                         dicasHtml += `<tr class="border-b"><td class="py-2 pr-4 font-semibold text-gray-700 align-top w-1/3">${item.caracteristica}</td><td class="py-2 text-gray-600">${item.dica}</td></tr>`;
@@ -1074,6 +1109,8 @@
                     const collectionRef = collection(db, tipoAtual);
                     await addDoc(collectionRef, novoRegistro);
                     currentState.view = tipoAtual;
+                    // O onSnapshot do Firebase vai atualizar a lista de registros
+                    // mas precisamos navegar para a tela de lista manualmente.
                     render();
                 } catch (e) {
                     console.error("Firebase: Erro ao adicionar documento: ", e);
@@ -1100,6 +1137,8 @@
                             const docRef = doc(db, type, id);
                             await deleteDoc(docRef);
                             // O onSnapshot cuidará de atualizar a UI, não precisamos chamar o render()
+                            // Mas se estivermos na mesma view, forçamos a renderização
+                            render();
                             console.log("Registro excluído com sucesso!");
                         } catch (error) {
                             console.error("Firebase: Erro ao excluir documento: ", error);
